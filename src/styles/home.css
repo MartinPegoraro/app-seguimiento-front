@@ -1,0 +1,28 @@
+.imgHome {
+    object-fit: cover;
+}
+.imgHome2 {
+    object-fit: cover;
+    padding: 3px;
+    border-radius: 10px;
+    
+}
+
+.buttonInfo:hover{
+border-bottom: 0.5px solid rgb(141, 141, 141);
+}
+
+.buttonSearch{
+    background: linear-gradient(#e66465, #effd81);
+
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    margin-left: -4px;
+}
+
+.logo:hover{
+    border-radius: 5px;
+    -webkit-box-shadow: 8px 7px 13px 1px rgba(237,208,66,0.44);
+    -moz-box-shadow: 8px 7px 13px 1px rgba(237,208,66,0.44);
+    box-shadow: 8px 7px 13px 1px rgba(237,208,66,0.44)
+}
