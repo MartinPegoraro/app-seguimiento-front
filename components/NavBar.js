@@ -4,7 +4,8 @@ import Image from 'next/image';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import InfoIcon from '@mui/icons-material/Info';
 import CallIcon from '@mui/icons-material/Call';
-export default function NavBar() {
+export default function NavBar({ state }) {
+    console.log(state);
     return (
         <>
             <Box sx={{ width: '100%', border: '1px solid black', borderRadius: 1, bgcolor: 'white' }}>
@@ -12,7 +13,7 @@ export default function NavBar() {
                     <Grid item xs={3} sx={{ position: 'relative' }}>
                         <Image
                             className='logo'
-                            src="/img/logo.png"
+                            src="/img/logo4png.png"
                             alt='img'
                             fill
                         />

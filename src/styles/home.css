@@ -8,6 +8,18 @@
     
 }
 
+.icon-icon{
+    color: #1976d2;
+}
+
+.container{
+    width: 40%; /* Ancho deseado para el div */
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px; /* Margen superior opcional para el centrado vertical */
+    margin-bottom: 0;
+}
+
 .buttonInfo:hover{
 border-bottom: 0.5px solid rgb(141, 141, 141);
 }
