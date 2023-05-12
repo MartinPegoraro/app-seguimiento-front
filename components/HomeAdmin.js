@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Box, Button, Grid, Typography, IconButton, Avatar, TextField } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Image from 'next/image';
+import ModalCreateUser from './ModalCreateUSer'
+import ModalCreateOrder from './ModalCreateOrder';
 
 const usuarios = [
     {
@@ -34,14 +36,47 @@ const camiones = [
         repartidor: 'freddy',
         nroDePedidos: 6
     },
+    {
+        camion: '3',
+        patente: 'asdfdgh',
+        repartidor: 'makako',
+        nroDePedidos: 4
+    },
 
 ]
 export default function HomeAdmin() {
     const [state, setState] = useState('')
+    const [openModal, setOpenModal] = useState(false)
+    const [openModalCreateOrder, setOpenModalCreateOrder] = useState(false)
 
 
+    const handleOpenModalCreateOrder = () => {
+        setOpenModalCreateOrder(true)
+    }
+
+    const handleCloseModalCreateOrder = () => {
+        setOpenModalCreateOrder(false)
+    }
+
+    const handleOpenModal = () => {
+        setOpenModal(true)
+    }
+    const handleCloseModal = () => {
+        setOpenModal(false)
+    }
     return (
         <>
+            <ModalCreateOrder
+                handleCloseModalCreateOrder={handleCloseModalCreateOrder}
+                openModalCreateOrder={openModalCreateOrder}
+                camiones={camiones}
+                usuarios={usuarios}
+            />
+            <ModalCreateUser
+                handleCloseModal={handleCloseModal}
+                openModal={openModal}
+
+            />
             <Box sx={{ width: '100%', height: '100vh', position: 'relative', display: 'inline-block', }}>
                 {/* <Image
             src='/img/fondoCamion.jpg'
@@ -62,10 +97,10 @@ export default function HomeAdmin() {
                 </Grid>
                 <Grid container>
                     <Grid item xs={3} sx={{ display: 'flex', flexDirection: 'column', bgcolor: 'beige', height: '100vh' }}>
-                        <Button className='boxContainerHomeAdmin' style={{ justifyContent: 'flex-start' }}>
+                        <Button className='boxContainerHomeAdmin' style={{ justifyContent: 'flex-start' }} onClick={handleOpenModalCreateOrder}>
                             <Typography variant='subtitle2' sx={{ textTransform: 'capitalize' }}>Crear Pedido</Typography>
                         </Button>
-                        <Button className='boxContainerHomeAdmin' style={{ justifyContent: 'flex-start' }}>
+                        <Button className='boxContainerHomeAdmin' style={{ justifyContent: 'flex-start' }} onClick={handleOpenModal}>
                             <Typography variant='subtitle2' sx={{ textTransform: 'capitalize' }}>Crear Usuario</Typography>
                         </Button>
                         <Button className='boxContainerHomeAdmin' style={{ justifyContent: 'flex-start' }} onClick={() => setState('usuario')}>
