@@ -1,16 +1,32 @@
 import { Modal, Typography, Box, TextField, Button, Grid } from '@mui/material';
+import axios from 'axios';
+import { truckApi } from '@/pages/api/truck';
 import { useState } from 'react';
 
 const ModalCreateUser = ({ handleCloseModal, openModal }) => {
-    const [formData, setFormData] = useState({ lastName: '', firstName: '', email: '', phone: '', address: '' })
+    const [formData, setFormData] = useState({ nombre: '', apellido: '', direccion: '', email: '' })
+    const [email, setEmail] = useState('');
 
     const onInputChange = ({ target }) => {
-        console.log(target);
         const { name, value } = target;
         setFormData({
             ...formData,
             [name]: value
         });
+    }
+
+    const isEmailValid = () => {
+        // Expresión regular para validar un correo electrónico
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const handleCreateClient = async () => {
+        const res = await truckApi.createOneClient(formData)
+        console.log(res?.status);
+        if (res?.status === 201) {
+            handleCloseModal()
+        }
     }
     return (
         <>
@@ -25,9 +41,9 @@ const ModalCreateUser = ({ handleCloseModal, openModal }) => {
                     <TextField
                         sx={{ m: 1, width: '70%' }}
                         onChange={onInputChange}
-                        name='firstName'
+                        name='nombre'
                         label='Nombre'
-                        value={formData.firstName}
+                        value={formData.nombre}
                         size='small'
                         required
                         id="outlined-required"
@@ -35,9 +51,9 @@ const ModalCreateUser = ({ handleCloseModal, openModal }) => {
                     <TextField
                         sx={{ m: 1, width: '70%' }}
                         onChange={onInputChange}
-                        name='lastName'
+                        name='apellido'
                         label='Apellido'
-                        value={formData.lastName}
+                        value={formData.apellido}
                         size='small'
                         required
                         id="outlined-required"
@@ -52,7 +68,7 @@ const ModalCreateUser = ({ handleCloseModal, openModal }) => {
                         required
                         id="outlined-required"
                     />
-                    <TextField
+                    {/* <TextField
                         sx={{ m: 1, width: '70%' }}
                         onChange={onInputChange}
                         name='phone'
@@ -61,20 +77,20 @@ const ModalCreateUser = ({ handleCloseModal, openModal }) => {
                         size='small'
                         required
                         id="outlined-required"
-                    />
+                    /> */}
                     <TextField
                         sx={{ m: 1, width: '70%' }}
                         onChange={onInputChange}
-                        name='address'
+                        name='direccion'
                         label='Direccion'
-                        value={formData.address}
+                        value={formData.direccion}
                         size='small'
                         required
                         id="outlined-required"
                     />
                     <Grid container sx={{ justifyContent: 'center' }}>
                         <Grid item>
-                            <Button variant='contained' sx={{ display: 'block' }}>
+                            <Button variant='contained' sx={{ display: 'block' }} onClick={handleCreateClient}>
                                 <Typography sx={{ textTransform: 'capitalize' }}> Crear usuario </Typography>
                             </Button>
                         </Grid>

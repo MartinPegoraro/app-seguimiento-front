@@ -1,22 +1,34 @@
 import { Modal, Typography, Box, TextField, Button, Grid, Select, MenuItem, FormControl, InputLabel, Autocomplete } from '@mui/material';
 import { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, camiones, usuarios }) => {
-    const [formData, setFormData] = useState({ startDate: '', estimatedDate: '', destination: '', idProduct: '', idClient: '', idTruck: '' })
+const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, camiones, clientes }) => {
+    const [formData, setFormData] = useState({ fecha_salida: '', fecha_estimada: '', destino: '', camion_id: '', cliente_id: '' })
 
     const [selectedOptionTruck, setSelectedOptionTruck] = useState('');
     const [selectedOptionClient, setSelectedOptionClient] = useState('');
 
-    // const [selectedOption, setSelectedOption] = useState('');
-    // const [otherField1, setOtherField1] = useState('');
+    const [selectedDate, setSelectedDate] = useState(null);
+
+    const handleDateChangeDate = (date) => {
+        setSelectedDate(date);
+    };
+    // const handleAutocompleteChange = (event, value) => {
+    //     setSelectedOption(value);
+    // };
+
+    const handleDateChange = (date) => {
+        setSelectedDateStart(date);
+    };
 
     const handleChange = (event) => {
         setSelectedOptionTruck(event.target.value);
-        setFormData({ ...formData, idTruck: event.target.value })
+        setFormData({ ...formData, camion_id: event.target.value })
     };
     const handleChangeClient = (event) => {
         setSelectedOptionClient(event.target.value);
-        setFormData({ ...formData, idClient: event.target.value })
+        setFormData({ ...formData, cliente_id: event.target.value })
     };
 
     const onInputChange = ({ target }) => {
@@ -56,52 +68,32 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
             >
                 <Box className='boxModalCreateUser'>
                     <Typography>Crear un nuevo pedido para un cliente</Typography>
-                    {/* <Autocomplete
-                        freeSolo
-                        options={usuarios}
-                        getOptionLabel={(user) => user.nombre}
-                        value={formData.idClient}
-                        onChange={handleAutocompleteChange}
-                        renderInput={(params) => (
-                            <TextField {...params} label="Autocompletado" variant="outlined" />
-                        )}
+
+                    <DatePicker
+                        className='datePiker'
+                        placeholderText='12/05/2023'
+                        selected={selectedDate}
+                        onChange={handleDateChangeDate}
+                        dateFormat="dd/MM/yyyy"
+                    // Resto de las props que desees utilizar
                     />
-                        <TextField
-                            sx={{ m: 1, width: '70%' }}
-                            onChange={onInputChange}
-                            name='estimatedDate'
-                            label={otherField1.apeellido}
-                            value={otherField1.apeellido}
-                            size='small'
-                            required
-                            id="outlined-required"
-                        /> */}
                     <TextField
                         sx={{ m: 1, width: '70%' }}
                         onChange={onInputChange}
-                        name='startDate'
+                        name='fecha_salida'
                         label='fecha de salida'
-                        value={formData.startDate}
+                        value={formData.fecha_salida}
                         size='small'
                         required
                         id="outlined-required"
                     />
+
                     <TextField
                         sx={{ m: 1, width: '70%' }}
                         onChange={onInputChange}
-                        name='startDate'
-                        label='fecha de salida'
-                        value={formData.startDate}
-                        size='small'
-                        required
-                        id="outlined-required"
-                    />
-                    <TextField
-                        sx={{ m: 1, width: '70%' }}
-                        onChange={onInputChange}
-                        name='estimatedDate'
+                        name='fecha_estimada'
                         label='fecha estimada'
-                        value={formData.estimatedDate}
+                        value={formData.fecha_estimada}
                         size='small'
                         required
                         id="outlined-required"
@@ -109,47 +101,57 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
                     <TextField
                         sx={{ m: 1, width: '70%' }}
                         onChange={onInputChange}
-                        name='destination'
+                        name='destino'
                         label='destino'
-                        value={formData.destination}
+                        value={formData.destino}
                         size='small'
                         required
                         id="outlined-required"
                     />
-                    <FormControl sx={{ m: 1, width: '70%' }}>
-                        <InputLabel id="select-label">Selecciona un camion</InputLabel>
-                        <Select
-                            labelId="select-label"
-                            value={selectedOptionTruck}
-                            name='idTruck'
-                            onChange={handleChange}
-                        >
-                            {camiones.map((truck, index) => {
-                                return (
-
-                                    <MenuItem key={index} value={truck.camion}>camion {truck.camion}</MenuItem>
-                                )
-                            })}
-
-                        </Select>
-                    </FormControl>
                     <FormControl sx={{ m: 1, width: '70%' }}>
                         <InputLabel id="select-label">Selecciona un cliente</InputLabel>
                         <Select
                             labelId="select-label"
                             value={selectedOptionClient}
-                            name='idClient'
+                            name='cliente_id'
                             onChange={handleChangeClient}
                         >
-                            {usuarios.map((user, index) => {
+                            {clientes?.map((cliente, index) => {
                                 return (
 
-                                    <MenuItem key={index} value={user.nombre}>cliente {user.nombre}</MenuItem>
+                                    <MenuItem key={index} value={cliente.id}>{cliente.nombre}</MenuItem>
                                 )
                             })}
 
                         </Select>
                     </FormControl>
+                    <FormControl sx={{ m: 1, width: '70%' }}>
+                        <InputLabel id="select-label">Selecciona un camion</InputLabel>
+                        <Select
+                            labelId="select-label"
+                            value={selectedOptionTruck}
+                            name='camion_id'
+                            onChange={handleChange}
+                        >
+                            {camiones?.map((camion, index) => {
+                                return (
+
+                                    <MenuItem key={index} value={camion.id}>{camion.marca}</MenuItem>
+                                )
+                            })}
+
+                        </Select>
+                    </FormControl>
+                    {/* <FormControl sx={{ m: 1, width: '70%' }}>
+                        <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={clientes}
+                            getOptionLabel={(cliente) => cliente?.nombre}
+                            renderInput={(params) => <TextField {...params} label="Selecciona un cliente" />}
+                        />
+                    </FormControl> */}
+
                     <Grid container sx={{ justifyContent: 'center' }}>
                         <Grid item>
                             <Button variant='contained' sx={{ display: 'block' }} onClick={handleSubmit}>

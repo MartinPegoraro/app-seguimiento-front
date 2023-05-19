@@ -4,6 +4,7 @@ import Image from 'next/image';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import InfoIcon from '@mui/icons-material/Info';
 import CallIcon from '@mui/icons-material/Call';
+import Link from 'next/link';
 export default function NavBar({ state }) {
     console.log(state);
     return (
@@ -33,7 +34,9 @@ export default function NavBar({ state }) {
                         </Button>
                     </Grid>
                     <Grid item xs={4} sx={{ textAlign: 'right' }}>
-                        <Button variant="contained" size='small' sx={{ my: 2, mr: 2, borderRadius: 5 }}> ingresar </Button>
+                        <Link href={'/home-admin'}>
+                            <Button variant="contained" size='small' sx={{ my: 2, mr: 2, borderRadius: 5 }}> ingresar </Button>
+                        </Link>
                     </Grid>
                 </Grid>
             </Box>
