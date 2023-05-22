@@ -1,6 +1,8 @@
 import { apiTruck, apiOrder, apiClient } from "./base";
 
 export const truckApi = {
+
+    // CRUD DE CAMIONES ------------------------------------------------------
     getTruck: async () => {
         try {
             const response = await apiTruck.get('camiones')
@@ -11,9 +13,9 @@ export const truckApi = {
 
         }
     },
-    getOrders: async () => {
+    getOneTruck: async (id) => {
         try {
-            const response = await apiOrder.get('pedidos')
+            const response = await apiTruck.get(`camiones/${id}`)
             return response.data
 
         } catch (error) {
@@ -21,6 +23,8 @@ export const truckApi = {
 
         }
     },
+
+    //   CURD DE CLIENTES ------------------------------------------------
     getClient: async () => {
         try {
             const response = await apiClient.get('clientes')
@@ -56,6 +60,31 @@ export const truckApi = {
             // const response = await apiClient.patch(`clientes/${id}`)
             // console.log(response.data);
             // return response.data
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    },
+
+
+    //    CRUD DE PEDIDOSS ---------------------------------------------------------
+    createOneOrder: async (formData) => {
+        try {
+            console.log(formData);
+            const response = await apiOrder.post(`pedidos`, formData)
+            console.log(response.data);
+            return response.data
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    },
+    getOrders: async () => {
+        try {
+            const response = await apiOrder.get('pedidos')
+            return response.data
 
         } catch (error) {
             console.log(error);

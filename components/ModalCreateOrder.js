@@ -1,34 +1,25 @@
+import { truckApi } from '@/pages/api/truck';
 import { Modal, Typography, Box, TextField, Button, Grid, Select, MenuItem, FormControl, InputLabel, Autocomplete } from '@mui/material';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import ModalCreateUser from './ModalCreateUSer';
+
+
 
 const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, camiones, clientes }) => {
-    const [formData, setFormData] = useState({ fecha_salida: '', fecha_estimada: '', destino: '', camion_id: '', cliente_id: '' })
+    const [formData, setFormData] = useState({ fecha_salida: '', fecha_estimada: '', destino: '', camion: { id: '' }, cliente: { id: '' }, entregado: false })
 
     const [selectedOptionTruck, setSelectedOptionTruck] = useState('');
     const [selectedOptionClient, setSelectedOptionClient] = useState('');
-
-    const [selectedDate, setSelectedDate] = useState(null);
-
-    const handleDateChangeDate = (date) => {
-        setSelectedDate(date);
-    };
-    // const handleAutocompleteChange = (event, value) => {
-    //     setSelectedOption(value);
-    // };
-
-    const handleDateChange = (date) => {
-        setSelectedDateStart(date);
-    };
+    const [openModal, setOpenModal] = useState(false)
 
     const handleChange = (event) => {
         setSelectedOptionTruck(event.target.value);
-        setFormData({ ...formData, camion_id: event.target.value })
+        setFormData({ ...formData, camion: { id: event.target.value } })
     };
     const handleChangeClient = (event) => {
         setSelectedOptionClient(event.target.value);
-        setFormData({ ...formData, cliente_id: event.target.value })
+        setFormData({ ...formData, cliente: { id: event.target.value } })
     };
 
     const onInputChange = ({ target }) => {
@@ -37,6 +28,14 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
             ...formData,
             [name]: value
         });
+    }
+
+    const handleOpenModal = () => {
+        setOpenModal(true)
+        handleCloseModalCreateOrder()
+    }
+    const handleCloseModal = () => {
+        setOpenModal(false)
     }
 
     // ---------------------------------------------AUTOCOMPLETAR----------------------------------------------------
@@ -55,49 +54,58 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
     //     }
     // };
 
+
     const handleSubmit = () => {
         console.log(formData);
+        const res = truckApi.createOneOrder(formData)
+        if (res?.status === 201) {
+            handleCloseModalCreateOrder()
+        }
     }
     return (
         <>
+            <ModalCreateUser
+                handleCloseModal={handleCloseModal}
+                openModal={openModal}
+            />
             <Modal
                 open={openModalCreateOrder}
                 onClose={handleCloseModalCreateOrder}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
+
                 <Box className='boxModalCreateUser'>
                     <Typography>Crear un nuevo pedido para un cliente</Typography>
+                    <Box sx={{ maxWidth: '70%', textAlign: 'center' }}>
 
-                    <DatePicker
-                        className='datePiker'
-                        placeholderText='12/05/2023'
-                        selected={selectedDate}
-                        onChange={handleDateChangeDate}
-                        dateFormat="dd/MM/yyyy"
-                    // Resto de las props que desees utilizar
-                    />
-                    <TextField
-                        sx={{ m: 1, width: '70%' }}
-                        onChange={onInputChange}
-                        name='fecha_salida'
-                        label='fecha de salida'
-                        value={formData.fecha_salida}
-                        size='small'
-                        required
-                        id="outlined-required"
-                    />
+                        <Grid container >
+                            <Grid item xs={8}>
+                                <FormControl sx={{ width: '100%' }}>
+                                    <InputLabel id="select-label">Selecciona un cliente</InputLabel>
+                                    <Select
+                                        labelId="select-label"
+                                        value={selectedOptionClient}
+                                        name='cliente_id'
+                                        onChange={handleChangeClient}
+                                    >
+                                        {clientes?.map((cliente, index) => {
+                                            return (
 
-                    <TextField
-                        sx={{ m: 1, width: '70%' }}
-                        onChange={onInputChange}
-                        name='fecha_estimada'
-                        label='fecha estimada'
-                        value={formData.fecha_estimada}
-                        size='small'
-                        required
-                        id="outlined-required"
-                    />
+                                                <MenuItem key={index} value={cliente.id}>{cliente.nombre}</MenuItem>
+                                            )
+                                        })}
+
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Button onClick={handleOpenModal}>
+                                    <PersonAddIcon />
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Box>
                     <TextField
                         sx={{ m: 1, width: '70%' }}
                         onChange={onInputChange}
@@ -108,23 +116,6 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
                         required
                         id="outlined-required"
                     />
-                    <FormControl sx={{ m: 1, width: '70%' }}>
-                        <InputLabel id="select-label">Selecciona un cliente</InputLabel>
-                        <Select
-                            labelId="select-label"
-                            value={selectedOptionClient}
-                            name='cliente_id'
-                            onChange={handleChangeClient}
-                        >
-                            {clientes?.map((cliente, index) => {
-                                return (
-
-                                    <MenuItem key={index} value={cliente.id}>{cliente.nombre}</MenuItem>
-                                )
-                            })}
-
-                        </Select>
-                    </FormControl>
                     <FormControl sx={{ m: 1, width: '70%' }}>
                         <InputLabel id="select-label">Selecciona un camion</InputLabel>
                         <Select
@@ -142,6 +133,37 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
 
                         </Select>
                     </FormControl>
+
+                    <TextField
+                        sx={{ m: 1, width: '70%' }}
+                        onChange={onInputChange}
+                        type='date'
+                        name='fecha_salida'
+                        value={formData.fecha_salida}
+                        size='small'
+                        required
+                        id="outlined-required"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        label="Fecha de salida"
+                    />
+
+                    <TextField
+                        sx={{ m: 1, width: '70%' }}
+                        onChange={onInputChange}
+                        type='date'
+                        name='fecha_estimada'
+                        value={formData.fecha_estimada}
+                        size='small'
+                        required
+                        id="outlined-required"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        label="Fecha estimada de llegada"
+                    />
+
                     {/* <FormControl sx={{ m: 1, width: '70%' }}>
                         <Autocomplete
                             disablePortal

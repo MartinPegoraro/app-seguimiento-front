@@ -38,8 +38,8 @@ export default function HomeAdmin() {
 
     const handleTruck = (camion) => {
         router.push({
-            pathname: `/home-admin/pedido/[id]`,
-            query: { id: camion.camion }
+            pathname: `/home-admin/camion/[id]`,
+            query: { id: camion.id }
         })
     }
 
@@ -62,7 +62,6 @@ export default function HomeAdmin() {
     useEffect(() => {
         axiosData()
     }, [])
-    console.log(clientes);
     return (
         <>
             <ModalCreateOrder
