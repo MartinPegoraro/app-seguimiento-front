@@ -1,6 +1,8 @@
 import { truckApi } from '@/pages/api/truck';
 import { Modal, Typography, Box, TextField, Button, Grid, Select, MenuItem, FormControl, InputLabel, Autocomplete } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 import { useState } from 'react';
 import ModalCreateUser from './ModalCreateUSer';
 
@@ -76,6 +78,9 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
             >
 
                 <Box className='boxModalCreateUser'>
+                    <Button sx={{ display: 'block' }} onClick={() => handleCloseModalCreateOrder()}>
+                        <ArrowBackIcon />
+                    </Button>
                     <Typography>Crear un nuevo pedido para un cliente</Typography>
                     <Box sx={{ maxWidth: '70%', textAlign: 'center' }}>
 

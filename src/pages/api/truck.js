@@ -3,6 +3,15 @@ import { apiTruck, apiOrder, apiClient } from "./base";
 export const truckApi = {
 
     // CRUD DE CAMIONES ------------------------------------------------------
+    createOneTruck: async (formData) => {
+        try {
+            const response = await apiTruck.post('camiones', formData)
+            return response
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
     getTruck: async () => {
         try {
             const response = await apiTruck.get('camiones')

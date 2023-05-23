@@ -1,5 +1,6 @@
 import { Modal, Typography, Box, TextField, Button, Grid } from '@mui/material';
 import axios from 'axios';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { truckApi } from '@/pages/api/truck';
 import { useState } from 'react';
 
@@ -37,6 +38,9 @@ const ModalCreateUser = ({ handleCloseModal, openModal }) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box className='boxModalCreateUser'>
+                    <Button sx={{ display: 'block' }} onClick={() => handleCloseModal()}>
+                        <ArrowBackIcon />
+                    </Button>
                     <Typography>Crear un nuevo contacto</Typography>
                     <TextField
                         sx={{ m: 1, width: '70%' }}
@@ -95,6 +99,7 @@ const ModalCreateUser = ({ handleCloseModal, openModal }) => {
                             </Button>
                         </Grid>
                     </Grid>
+
                 </Box>
             </Modal >
         </>

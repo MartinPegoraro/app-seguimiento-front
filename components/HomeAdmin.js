@@ -8,6 +8,7 @@ import { truckApi } from '@/pages/api/truck';
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { Router, useRouter } from 'next/router';
+import ModalCreateTruck from './ModalCreateTruck';
 
 
 export default function HomeAdmin() {
@@ -17,7 +18,15 @@ export default function HomeAdmin() {
     const [pedidos, setPedidos] = useState()
     const [clientes, setClientes] = useState()
     const [openModalCreateOrder, setOpenModalCreateOrder] = useState(false)
-    // const []
+    const [openModalTruck, setOpenModalTruck] = useState(false)
+
+    const handleOpenModalTruck = () => {
+        setOpenModalTruck(true)
+    }
+
+    const handleCloseModalTruck = () => {
+        setOpenModalTruck(false)
+    }
 
     const router = useRouter()
 
@@ -74,6 +83,11 @@ export default function HomeAdmin() {
                 handleCloseModal={handleCloseModal}
                 openModal={openModal}
 
+            />
+
+            <ModalCreateTruck
+                handleCloseModalTruck={handleCloseModalTruck}
+                openModalTruck={openModalTruck}
             />
             <Box sx={{ width: '100%', height: '100vh', position: 'relative', display: 'inline-block', }}>
 
@@ -132,7 +146,7 @@ export default function HomeAdmin() {
                                 })
                                 }
                                 <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                    <Button className='truck' variant='outlined' sx={{ height: '15vh', width: '80%', m: 5 }}>
+                                    <Button className='truck' variant='outlined' sx={{ height: '15vh', width: '80%', m: 5 }} onClick={handleOpenModalTruck}>
                                         <AddCircleIcon />
                                         <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Agregar nuevo camion</Typography>
 
