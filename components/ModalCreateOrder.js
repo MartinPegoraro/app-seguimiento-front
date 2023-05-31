@@ -1,10 +1,10 @@
 import { truckApi } from '@/pages/api/truck';
-import { Modal, Typography, Box, TextField, Button, Grid, Select, MenuItem, FormControl, InputLabel, Autocomplete } from '@mui/material';
+import { Modal, Typography, Box, TextField, Button, Grid, Tooltip, Select, MenuItem, FormControl, InputLabel, Autocomplete } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { useState } from 'react';
-import ModalCreateUser from './ModalCreateUSer';
+import ModalCreateUser from './ModalCreateUser';
 
 
 
@@ -82,34 +82,32 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
                         <ArrowBackIcon />
                     </Button>
                     <Typography>Crear un nuevo pedido para un cliente</Typography>
-                    <Box sx={{ maxWidth: '70%', textAlign: 'center' }}>
+                    <Box sx={{ textAlign: 'center' }}>
 
-                        <Grid container >
-                            <Grid item xs={8}>
-                                <FormControl sx={{ width: '100%' }}>
-                                    <InputLabel id="select-label">Selecciona un cliente</InputLabel>
-                                    <Select
-                                        labelId="select-label"
-                                        value={selectedOptionClient}
-                                        name='cliente_id'
-                                        onChange={handleChangeClient}
-                                    >
-                                        {clientes?.map((cliente, index) => {
-                                            return (
+                        {/* <Grid container > */}
+                        {/* <Grid item xs={8}> */}
+                        <FormControl sx={{ m: 1, width: '57%' }}>
+                            <InputLabel id="select-label">Selecciona un cliente</InputLabel>
+                            <Select
+                                labelId="select-label"
+                                value={selectedOptionClient}
+                                name='cliente_id'
+                                onChange={handleChangeClient}
+                            >
+                                {clientes?.map((cliente, index) => {
+                                    return (
 
-                                                <MenuItem key={index} value={cliente.id}>{cliente.nombre}</MenuItem>
-                                            )
-                                        })}
+                                        <MenuItem key={index} value={cliente.id}>{cliente.nombre}</MenuItem>
+                                    )
+                                })}
 
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Button onClick={handleOpenModal}>
-                                    <PersonAddIcon />
-                                </Button>
-                            </Grid>
-                        </Grid>
+                            </Select>
+                        </FormControl>
+                        <Tooltip title="Crear nuevo cliente" arrow >
+                            <Button onClick={handleOpenModal} sx={{ mt: 1, padding: 2 }}>
+                                <PersonAddIcon />
+                            </Button>
+                        </Tooltip>
                     </Box>
                     <TextField
                         sx={{ m: 1, width: '70%' }}

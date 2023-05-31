@@ -2,13 +2,46 @@ import React, { useState } from 'react'
 import { Box, Button, Grid, Typography, IconButton, Avatar, TextField } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Image from 'next/image';
-import ModalCreateUser from './ModalCreateUSer'
+import ModalCreateUser from './ModalCreateUser'
 import ModalCreateOrder from './ModalCreateOrder';
 import { truckApi } from '@/pages/api/truck';
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { Router, useRouter } from 'next/router';
 import ModalCreateTruck from './ModalCreateTruck';
+
+
+const camions = [
+    {
+        "id": 1,
+        "marca": "Iveco",
+        "patente": "AB 088 XY",
+        "pedidos": [
+            {
+                "id": 6,
+                "nroPedido": "5546435",
+                "createAt": "2023-05-16",
+                "fechaSalida": "16/05/2023",
+                "fechaEstimada": "19/05/2023",
+                "entregado": false,
+                "estado": "en camion",
+                "clienteNombre": "Freddy Ferreira",
+                "clienteId": 1
+            }
+        ]
+
+    },
+    {
+        "id": 2,
+        "marca": "Ford",
+        "patente": "AA 100 XY"
+    },
+    {
+        "id": 3,
+        "marca": "Scania",
+        "patente": "AA 020 NU"
+    }
+]
 
 
 export default function HomeAdmin() {
@@ -130,6 +163,17 @@ export default function HomeAdmin() {
                     <Grid item xs={9} sx={{ backgroundImage: 'url("/img/camion.jpg")', backgroundSize: 'cover', }}>
                         {state === 'camion' ?
                             <Grid container>
+                                < Grid item xs={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    {/* <Link href={{ pathname: `/home-admin/pedido/[id]`, query: { id: '1' } }}> */}
+                                    <Button className='truck' variant='outlined' onClick={() => handleTruck(camions[0])} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '15vh', m: 5, p: 2 }} >
+                                        <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Camion: {camions[0].id}</Typography>
+                                        <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Patente: {camions[0].patente}</Typography>
+                                        <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Marca: {camions[0].marca} </Typography>
+                                        <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Nro de pedidos: {camions[0].pedidos.length} </Typography>
+                                    </Button>
+
+                                    {/* </Link> */}
+                                </Grid>
                                 {camiones?.map((camion, index) => {
                                     return (
                                         < Grid key={index} item xs={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -140,6 +184,7 @@ export default function HomeAdmin() {
                                                 <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Marca: {camion.marca} </Typography>
                                                 <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Nro de pedidos: {camion?.pedidos?.length || 0} </Typography>
                                             </Button>
+
                                             {/* </Link> */}
                                         </Grid>
                                     )

@@ -18,6 +18,13 @@ export default function Cliente() {
     }
     const router = useRouter()
 
+    const handleDelete = async () => {
+        const res = await truckApi.deleteOneClient(client.id)
+        if (res.status === '201') {
+            router.push('/home-admin')
+        }
+    }
+
     const fetchData = useCallback(async () => {
         const idUser = parseInt(router.query.id)
         const res = await truckApi.getOneClient(idUser)
@@ -54,6 +61,9 @@ export default function Cliente() {
                 <Grid item xs={3} sx={{ display: 'flex', flexDirection: 'column', bgcolor: 'beige', height: '100vh' }}>
                     <Button className='boxContainerCliente' onClick={handleOpen} style={{ justifyContent: 'flex-start' }}>
                         <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Modificar Datos del Cliente</Typography>
+                    </Button>
+                    <Button className='boxContainerCliente' onClick={handleDelete} style={{ justifyContent: 'flex-start' }}>
+                        <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Eliminar cliente</Typography>
                     </Button>
                     <Link className='boxContainerCliente' href={'/home-admin'}>
                         <Button style={{ justifyContent: 'flex-start' }}>

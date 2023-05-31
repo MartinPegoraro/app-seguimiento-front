@@ -33,6 +33,17 @@ export const truckApi = {
         }
     },
 
+    deleteOneTruck: async (id) => {
+        try {
+            const response = await apiTruck.delete(`camiones/${id}`)
+            return response
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    },
+
     //   CURD DE CLIENTES ------------------------------------------------
     getClient: async () => {
         try {
@@ -64,6 +75,16 @@ export const truckApi = {
 
         }
     },
+
+    deleteOneClient: async (id) => {
+        try {
+            const response = await apiClient.delete(`clientes/${id}`)
+            return response
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
     updateOneClient: async (id) => {
         try {
             // const response = await apiClient.patch(`clientes/${id}`)
@@ -100,4 +121,21 @@ export const truckApi = {
 
         }
     },
+    getOneOrders: async (id) => {
+        try {
+            const response = await apiOrder.get(`pedidos/${id}`)
+            return response.data
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    deleteOneOrder: async (id) => {
+        try {
+            const response = await apiOrder.delete(`pedidos/${id}`)
+            return response
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
 }
