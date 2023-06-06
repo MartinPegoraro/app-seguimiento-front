@@ -1,11 +1,12 @@
 import { apiTruck, apiOrder, apiClient } from "./base";
 
-export const truckApi = {
+export const apiRest = {
 
     // CRUD DE CAMIONES ------------------------------------------------------
     createOneTruck: async (formData) => {
         try {
             const response = await apiTruck.post('camiones', formData)
+            console.log(response);
             return response
         } catch (error) {
             console.log(error);
@@ -24,6 +25,7 @@ export const truckApi = {
     },
     getOneTruck: async (id) => {
         try {
+            console.log(id);
             const response = await apiTruck.get(`camiones/${id}`)
             return response.data
 
@@ -36,6 +38,7 @@ export const truckApi = {
     deleteOneTruck: async (id) => {
         try {
             const response = await apiTruck.delete(`camiones/${id}`)
+            console.log(response);
             return response
 
         } catch (error) {
@@ -85,10 +88,11 @@ export const truckApi = {
         }
     },
 
-    updateOneClient: async (id) => {
+    updateOneClient: async (data) => {
         try {
-            // const response = await apiClient.patch(`clientes/${id}`)
-            // console.log(response.data);
+            console.log(data);
+            const response = await apiClient.patch(`clientes/${data.id}`, data)
+            console.log(response.data);
             // return response.data
 
         } catch (error) {
@@ -103,8 +107,8 @@ export const truckApi = {
         try {
             console.log(formData);
             const response = await apiOrder.post(`pedidos`, formData)
-            console.log(response.data);
-            return response.data
+            console.log(response);
+            return response
 
         } catch (error) {
             console.log(error);
@@ -125,6 +129,14 @@ export const truckApi = {
         try {
             const response = await apiOrder.get(`pedidos/${id}`)
             return response.data
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    getOneOrdersCliente: async (id) => {
+        try {
+            const response = await apiOrder.get(`pedidos/${id}`)
+            return response
         } catch (error) {
             console.log(error);
         }

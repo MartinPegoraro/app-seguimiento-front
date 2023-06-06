@@ -1,4 +1,4 @@
-import { truckApi } from '@/pages/api/truck'
+import { apiRest } from '@/pages/api/api'
 import { Modal, Box, TextField, Button, Typography } from '@mui/material'
 import React, { useState } from 'react'
 export default function ModalChangeOrders({ open, handleClose, order }) {
@@ -21,7 +21,7 @@ export default function ModalChangeOrders({ open, handleClose, order }) {
             fechaEstimada: !dataOrder.fechaEstimada ? order.fechaEstimada : dataOrder.fechaEstimada
         }
         console.log(dataFinalOrder);
-        // const res = await truckApi.updateOneClient()
+        // const res = await apiRest.updateOneClient()
     }
     return (
         <>

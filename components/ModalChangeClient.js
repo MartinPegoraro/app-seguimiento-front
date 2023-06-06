@@ -1,4 +1,4 @@
-import { truckApi } from '@/pages/api/truck'
+import { apiRest } from '@/pages/api/api'
 import { Modal, Box, TextField, Button } from '@mui/material'
 import React, { useState } from 'react'
 
@@ -20,7 +20,7 @@ const ModalChangeClient = ({ open, handleClose, client }) => {
             direccion: !dataClient.direccion ? client.direccion : dataClient.direccion,
             email: !dataClient.email ? client.email : dataClient.email
         }
-        const res = await truckApi.updateOneClient()
+        const res = await apiRest.updateOneClient(dataFinalClient)
     }
     return (
         <>

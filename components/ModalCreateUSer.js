@@ -1,7 +1,7 @@
 import { Modal, Typography, Box, TextField, Button, Grid } from '@mui/material';
 import axios from 'axios';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { truckApi } from '@/pages/api/truck';
+import { apiRest } from '@/pages/api/api';
 import { useState } from 'react';
 
 const ModalCreateUser = ({ handleCloseModal, openModal }) => {
@@ -23,7 +23,7 @@ const ModalCreateUser = ({ handleCloseModal, openModal }) => {
     };
 
     const handleCreateClient = async () => {
-        const res = await truckApi.createOneClient(formData)
+        const res = await apiRest.createOneClient(formData)
         console.log(res?.status);
         if (res?.status === 201) {
             handleCloseModal()

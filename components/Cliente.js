@@ -4,11 +4,13 @@ import { useRouter } from 'next/router';
 import UndoIcon from '@mui/icons-material/Undo';
 import Link from 'next/link';
 import ModalChangeClient from './ModalChangeClient';
-import { truckApi } from '@/pages/api/truck';
+import { apiRest } from '@/pages/api/api';
 
 export default function Cliente() {
     const [open, setOpen] = useState(false)
     const [client, setClient] = useState()
+    const [existOrder, setExistOrder] = useState(false)
+
     const handleOpen = () => {
         setOpen(true)
     }
@@ -19,7 +21,7 @@ export default function Cliente() {
     const router = useRouter()
 
     const handleDelete = async () => {
-        const res = await truckApi.deleteOneClient(client.id)
+        const res = await apiRest.deleteOneClient(client.id)
         if (res.status === '201') {
             router.push('/home-admin')
         }
@@ -27,16 +29,20 @@ export default function Cliente() {
 
     const fetchData = useCallback(async () => {
         const idUser = parseInt(router.query.id)
-        const res = await truckApi.getOneClient(idUser)
+        const res = await apiRest.getOneClient(idUser)
+        const resOrder = await apiRest.getOrders()
+        resOrder.map((order) => {
+            if (order.clienteId === res.id && order.camionId === undefined) {
+                setExistOrder(true)
+            }
+        })
         setClient(res)
     }, [router])
 
-    console.log(client);
     useEffect(() => {
         fetchData()
     }, [fetchData])
 
-    console.log(client);
     return (
         <Box sx={{ width: '100%', height: '100vh', position: 'relative', display: 'inline-block', }}>
             <ModalChangeClient
@@ -62,9 +68,15 @@ export default function Cliente() {
                     <Button className='boxContainerCliente' onClick={handleOpen} style={{ justifyContent: 'flex-start' }}>
                         <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Modificar Datos del Cliente</Typography>
                     </Button>
-                    <Button className='boxContainerCliente' onClick={handleDelete} style={{ justifyContent: 'flex-start' }}>
-                        <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Eliminar cliente</Typography>
-                    </Button>
+                    {existOrder ?
+                        <Button className='boxContainerCliente' onClick={handleDelete} style={{ justifyContent: 'flex-start' }}>
+                            <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Eliminar cliente</Typography>
+                        </Button>
+                        :
+                        <Button disabled className='boxContainerCliente' onClick={handleDelete} style={{ justifyContent: 'flex-start' }}>
+                            <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Eliminar cliente (pedido/s en camion)</Typography>
+                        </Button>
+                    }
                     <Link className='boxContainerCliente' href={'/home-admin'}>
                         <Button style={{ justifyContent: 'flex-start' }}>
                             <UndoIcon />

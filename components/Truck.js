@@ -1,21 +1,21 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { Box, Button, Grid, Typography, IconButton, Avatar, TextField, Tooltip } from '@mui/material';
+import { Box, Button, Grid, Typography, IconButton, Avatar, TextField, Tooltip, Alert } from '@mui/material';
 import { Router, useRouter } from 'next/router';
 import UndoIcon from '@mui/icons-material/Undo';
 import Link from 'next/link';
 import ModalChangeClient from './ModalChangeClient';
-import { truckApi } from '@/pages/api/truck';
+import { apiRest } from '@/pages/api/api';
 
 export default function Truck() {
     const [truck, setTruck] = useState()
+    // const [alert, setAlert] = useState(false)
 
     const router = useRouter()
 
     const handleDelete = async () => {
-        const res = await truckApi.deleteOneTruck(truck?.id)
-        console.log(res);
-        if (res?.status === '201') {
-            router.push({ pathname: `home-admin` })
+        const res = await apiRest.deleteOneTruck(truck?.id)
+        if (res?.status === 200) {
+            router.push({ pathname: `/home-admin` })
         }
     }
 
@@ -24,19 +24,24 @@ export default function Truck() {
     }
 
     const fetchData = useCallback(async () => {
-        const idUser = parseInt(router.query.id)
-        const res = await truckApi.getOneTruck(idUser)
-        console.log(res);
+        const idUser = parseInt(router?.query?.id)
+        console.log(idUser);
+        const res = await apiRest.getOneTruck(idUser)
         setTruck(res)
     }, [router])
 
     useEffect(() => {
         fetchData()
     }, [fetchData])
-    console.log(truck?.pedidos);
+
     return (
         <Box sx={{ width: '100%', height: '100vh', position: 'relative', display: 'inline-block', }}>
+            {/* {alert &&
 
+                <Alert severity="warning">
+                    No se pudo eliminar el camion porque contiene pedidos
+                </Alert>
+            } */}
             <Grid container>
                 <Grid item xs={3}>
                     <Box bgcolor='#0c5eaf' style={{ justifyContent: 'flex-start' }}>
@@ -58,7 +63,7 @@ export default function Truck() {
                             <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Volver Atras</Typography>
                         </Button>
                     </Link>
-                    {truck?.pedidos.lenght < 1 || 'undefined'
+                    {truck?.pedidos?.length === 0 || undefined
                         ?
                         <Button className='boxContainerCliente' style={{ justifyContent: 'flex-start' }} onClick={handleDelete}>
                             <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Eliminar camion</Typography>
@@ -66,7 +71,7 @@ export default function Truck() {
                         :
                         <Tooltip title="Esta es la información del botón" arrow>
                             <Button className='boxContainerCliente' disabled style={{ justifyContent: 'flex-start' }}>
-                                <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Eliminar camion</Typography>
+                                <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Eliminar camion (contiene pedidos) </Typography>
                             </Button>
                         </Tooltip>
                     }
@@ -76,18 +81,25 @@ export default function Truck() {
                         {truck?.pedidos?.map((pedido, index) => {
                             return (
                                 < Grid key={index} item xs={4} >
-                                    <Button className='truck' variant='outlined' onClick={() => handleOneOrders(pedido.id)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
+                                    <Button className='truck' variant='outlined' onClick={() => handleOneOrders(pedido.id)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, mb: 0.5, p: 2 }}>
                                         <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>NroPedido: {pedido?.nroPedido}</Typography>
                                         <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Nombre Cliente: {pedido?.clienteNombre}</Typography>
                                         <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Destino: {pedido?.destino}</Typography>
                                         <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Fecha estimada de llegada: {pedido?.fechaEstimada}</Typography>
                                     </Button>
-                                    <Button>Entregado</Button>
+                                    <Button variant='contained' sx={{
+                                        width: '50%', height: '2vh', m: 12, mt: 0, p: 2, bgcolor: 'white', color: 'black',
+                                        '&:hover': {
+                                            bgcolor: 'rgb(0, 34, 128)',
+                                            color: 'white'
+                                        },
+                                    }} >Entregado</Button>
                                 </Grid>
                             )
                         })}
                     </Grid>
                 </Grid>
+
             </Grid >
         </Box >
     )

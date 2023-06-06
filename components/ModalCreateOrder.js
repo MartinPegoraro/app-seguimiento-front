@@ -1,4 +1,4 @@
-import { truckApi } from '@/pages/api/truck';
+import { apiRest } from '@/pages/api/api';
 import { Modal, Typography, Box, TextField, Button, Grid, Tooltip, Select, MenuItem, FormControl, InputLabel, Autocomplete } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -9,7 +9,7 @@ import ModalCreateUser from './ModalCreateUser';
 
 
 const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, camiones, clientes }) => {
-    const [formData, setFormData] = useState({ fecha_salida: '', fecha_estimada: '', destino: '', camion: { id: '' }, cliente: { id: '' }, entregado: false })
+    const [formData, setFormData] = useState({ fechaSalida: '', fechaEstimada: '', destino: '', camion: { id: '' }, cliente: { id: '' }, entregado: false })
 
     const [selectedOptionTruck, setSelectedOptionTruck] = useState('');
     const [selectedOptionClient, setSelectedOptionClient] = useState('');
@@ -57,9 +57,9 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
     // };
 
 
-    const handleSubmit = () => {
-        console.log(formData);
-        const res = truckApi.createOneOrder(formData)
+    const handleSubmit = async () => {
+        const res = await apiRest.createOneOrder(formData)
+        console.log(res);
         if (res?.status === 201) {
             handleCloseModalCreateOrder()
         }
@@ -141,8 +141,8 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
                         sx={{ m: 1, width: '70%' }}
                         onChange={onInputChange}
                         type='date'
-                        name='fecha_salida'
-                        value={formData.fecha_salida}
+                        name='fechaSalida'
+                        value={formData.fechaSalida}
                         size='small'
                         required
                         id="outlined-required"
@@ -156,8 +156,8 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
                         sx={{ m: 1, width: '70%' }}
                         onChange={onInputChange}
                         type='date'
-                        name='fecha_estimada'
-                        value={formData.fecha_estimada}
+                        name='fechaEstimada'
+                        value={formData.fechaEstimada}
                         size='small'
                         required
                         id="outlined-required"

@@ -4,25 +4,12 @@ import { useRouter } from 'next/router';
 import UndoIcon from '@mui/icons-material/Undo';
 import Link from 'next/link';
 import ModalChangeOrders from './ModalChangeOrders';
-import { truckApi } from '@/pages/api/truck';
-
-const pedido = {
-    "id": 6,
-    "nroPedido": "5546435",
-    "createAt": "2023-05-16",
-    "destino": "Mendoza",
-    "fechaSalida": "16/05/2023",
-    "fechaEstimada": "19/05/2023",
-    "entregado": false,
-    "clienteNombre": "Freddy Ferreira",
-    "clienteId": 1,
-    "camionId": 2
-
-}
+import { apiRest } from '@/pages/api/api';
 
 export default function Order() {
     const [open, setOpen] = useState(false)
     const [order, setOrder] = useState()
+
     const handleOpen = () => {
         setOpen(true)
     }
@@ -33,24 +20,25 @@ export default function Order() {
     const router = useRouter()
 
     const handleDelete = async () => {
-        const res = await truckApi.deleteOneOrder(order.id)
-        if (res.status === '201') {
-            router.push('/home-admin')
+        const res = await apiRest.deleteOneOrder(order?.id)
+        if (res.status === 201 || res.status === 200) {
+            router.push({ pathname: `/home-admin` })
+
         }
     }
 
     const fetchData = useCallback(async () => {
         const idUser = parseInt(router.query.id)
-        const res = await truckApi.getOneOrders(idUser)
-        // setOrder(res)
-        setOrder(pedido)
+        const res = await apiRest.getOneOrders(idUser)
+
+        setOrder(res)
     }, [router])
 
     useEffect(() => {
         fetchData()
     }, [fetchData])
 
-    console.log(order);
+
     return (
         <>
             <Box sx={{ width: '100%', height: '100vh', position: 'relative', display: 'inline-block', }}>

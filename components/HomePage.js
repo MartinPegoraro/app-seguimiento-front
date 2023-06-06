@@ -6,8 +6,32 @@ import SearchIcon from '@mui/icons-material/Search';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import InfoIcon from '@mui/icons-material/Info';
 import CallIcon from '@mui/icons-material/Call';
+import { useRouter } from 'next/router';
+import { apiRest } from '@/pages/api/api';
 
 export default function HomePage() {
+
+    const [codSearch, setCodSearch] = useState({ trakingCod: '' })
+
+    const onInputChange = ({ target }) => {
+        const { name, value } = target;
+        setCodSearch({
+            ...codSearch,
+            [name]: value
+        })
+    }
+    const router = useRouter()
+
+    const handleSearch = async () => {
+        const res = await apiRest.getOneOrdersCliente(codSearch.trakingCod)
+        console.log(res);
+
+        if (res.status === 200) {
+
+            router.push(`/search/${res.data.id}`)
+        }
+        // console.log(codSearch);
+    }
 
     return (
         <>
@@ -23,10 +47,17 @@ export default function HomePage() {
                     <Typography sx={{ fontWeight: 'bold', mb: 2, pl: 5 }} >¿Querés saber por dónde se encuentra tu envío?</Typography>
                     <Grid container>
                         <Grid item xs={10}>
-                            <TextField fullWidth placeholder="Ingrese aqui su codigo de envio" variant="outlined" size='small' sx={{ bgcolor: 'white', borderRadius: 1 }} />
+                            <TextField fullWidth
+                                onChange={onInputChange}
+                                name='trakingCod'
+                                value={codSearch.trakingCod}
+                                placeholder="Ingrese aqui su codigo de envio"
+                                variant="outlined"
+                                size='small'
+                                sx={{ bgcolor: 'white', borderRadius: 1 }} />
                         </Grid>
                         <Grid item xs={2}>
-                            <Button className='buttonSearch' variant='contained' sx={{ height: '100%' }} >
+                            <Button className='buttonSearch' variant='contained' sx={{ height: '100%' }} onClick={handleSearch} >
                                 <SearchIcon />
                             </Button>
                         </Grid>

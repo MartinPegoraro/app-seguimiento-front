@@ -3,7 +3,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 import React, { useState } from 'react'
-import { truckApi } from '@/pages/api/truck';
+import { apiRest } from '@/pages/api/api';
 
 const ModalCreateTruck = ({ handleCloseModalTruck, openModalTruck }) => {
     const [formData, setFormData] = useState({ marca: '', patente: '' })
@@ -18,10 +18,12 @@ const ModalCreateTruck = ({ handleCloseModalTruck, openModalTruck }) => {
 
     const handleSubmit = async () => {
 
-        const res = await truckApi.createOneTruck(formData)
-        if (res?.status === '201') {
+        const res = await apiRest.createOneTruck(formData)
+        console.log(res?.status);
+        if (res?.status === 201) {
             handleCloseModalTruck()
             setFormData('')
+            location.reload()
         }
     }
     return (
