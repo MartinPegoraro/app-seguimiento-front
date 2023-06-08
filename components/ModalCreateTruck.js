@@ -19,7 +19,6 @@ const ModalCreateTruck = ({ handleCloseModalTruck, openModalTruck }) => {
     const handleSubmit = async () => {
 
         const res = await apiRest.createOneTruck(formData)
-        console.log(res?.status);
         if (res?.status === 201) {
             handleCloseModalTruck()
             setFormData('')

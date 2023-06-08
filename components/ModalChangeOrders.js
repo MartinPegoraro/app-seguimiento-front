@@ -1,8 +1,10 @@
 import { apiRest } from '@/pages/api/api'
-import { Modal, Box, TextField, Button, Typography } from '@mui/material'
+import { Modal, Box, TextField, Button, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material'
 import React, { useState } from 'react'
-export default function ModalChangeOrders({ open, handleClose, order }) {
-    const [dataOrder, setDataOrder] = useState({ id: '', destino: '', clienteNombre: '', camionId: '', fechaEstimada: '' })
+export default function ModalChangeOrders({ open, handleClose, order, clients, trucks }) {
+    const [dataOrder, setDataOrder] = useState({ id: '', destino: '', camion: { id: '' }, cliente: { id: '' }, fechaEstimada: '' })
+    const [selectedOptionTruck, setSelectedOptionTruck] = useState('');
+    const [selectedOptionClient, setSelectedOptionClient] = useState('');
 
     const onInputChange = ({ target }) => {
         const { name, value } = target;
@@ -12,16 +14,30 @@ export default function ModalChangeOrders({ open, handleClose, order }) {
         });
     }
 
+    const handleChange = (event) => {
+        setSelectedOptionTruck(event.target.value);
+        setDataOrder({ ...dataOrder, camion: { id: event.target.value } })
+    };
+
+    const handleChangeClient = (event) => {
+        setSelectedOptionClient(event.target.value);
+        setDataOrder({ ...dataOrder, cliente: { id: event.target.value } })
+    };
+
+
     const handleModifOrder = async () => {
         const dataFinalOrder = {
-            id: order?.id,
             destino: !dataOrder.destino ? order.destino : dataOrder.destino,
-            clienteNombre: !dataOrder.clienteNombre ? order.clienteNombre : dataOrder.clienteNombre,
-            camionId: !dataOrder.camionId ? order.camionId : dataOrder.camionId,
-            fechaEstimada: !dataOrder.fechaEstimada ? order.fechaEstimada : dataOrder.fechaEstimada
+            cliente: { id: !dataOrder.cliente.id ? order.clienteId : dataOrder.cliente.id },
+            camion: { id: !dataOrder.camion.id ? order.camionId : dataOrder.camion.id },
+            fechaEstimada: !dataOrder.fechaEstimada ? order.fechaEstimada : dataOrder.fechaEstimada,
         }
-        console.log(dataFinalOrder);
-        // const res = await apiRest.updateOneClient()
+        const res = await apiRest.updateOneOrder(order?.id, dataFinalOrder)
+        console.log(res?.status);
+        if (res.status === 200 || res.status === 201) {
+            console.log('124asdfgasdft');
+            handleClose()
+        }
     }
     return (
         <>
@@ -41,30 +57,46 @@ export default function ModalChangeOrders({ open, handleClose, order }) {
                         required
                         id="outlined-required"
                     />
+
                     <Typography>Cliente</Typography>
-                    <TextField
-                        sx={{ m: 1, width: '70%' }}
-                        onChange={onInputChange}
-                        name='clienteNombre'
-                        label={order?.clienteNombre}
-                        value={dataOrder.clienteNombre}
-                        size='small'
-                        required
-                        id="outlined-required"
-                    />
+                    <FormControl sx={{ m: 1, width: '70%' }}>
+                        <InputLabel id="select-label">{order?.clienteNombre}</InputLabel>
+                        <Select
+                            labelId="select-label"
+                            value={selectedOptionClient}
+                            name='cliente_id'
+                            onChange={handleChangeClient}
+                        >
+                            {clients?.map((cliente, index) => {
+                                return (
+                                    <MenuItem key={index} value={cliente.id}>{cliente.nombre} {cliente.apellido}</MenuItem>
+                                )
+                            })}
+
+                        </Select>
+                    </FormControl>
+
                     <Typography>Camion</Typography>
-                    <TextField
-                        sx={{ m: 1, width: '70%' }}
-                        onChange={onInputChange}
-                        name='camionId'
-                        label={order?.camionId}
-                        value={dataOrder.camionId}
-                        size='small'
-                        required
-                        id="outlined-required"
-                    />
+                    <FormControl sx={{ m: 1, width: '70%' }}>
+                        <InputLabel id="select-label">Camion {order?.camionId}</InputLabel>
+                        <Select
+                            labelId="select-label"
+                            value={selectedOptionTruck}
+                            name='camion_id'
+                            onChange={handleChange}
+                        >
+                            {trucks?.map((camion, index) => {
+                                return (
+                                    <MenuItem key={index} value={camion.id}>{camion.marca}</MenuItem>
+                                )
+                            })}
+
+                        </Select>
+                    </FormControl>
+
                     <Typography>Fecha estimada de llegada</Typography>
                     <TextField
+                        label={order?.fechaEstimada}
                         sx={{ m: 1, width: '70%' }}
                         onChange={onInputChange}
                         type='date'
@@ -76,7 +108,6 @@ export default function ModalChangeOrders({ open, handleClose, order }) {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        label={order?.fechaEstimada}
                     />
                     <Button variant='contained' sx={{ width: '40%' }} onClick={handleModifOrder}>Modificiar</Button>
                 </Box>

@@ -6,7 +6,6 @@ export const apiRest = {
     createOneTruck: async (formData) => {
         try {
             const response = await apiTruck.post('camiones', formData)
-            console.log(response);
             return response
         } catch (error) {
             console.log(error);
@@ -25,7 +24,6 @@ export const apiRest = {
     },
     getOneTruck: async (id) => {
         try {
-            console.log(id);
             const response = await apiTruck.get(`camiones/${id}`)
             return response.data
 
@@ -38,7 +36,6 @@ export const apiRest = {
     deleteOneTruck: async (id) => {
         try {
             const response = await apiTruck.delete(`camiones/${id}`)
-            console.log(response);
             return response
 
         } catch (error) {
@@ -70,7 +67,6 @@ export const apiRest = {
     getOneClient: async (id) => {
         try {
             const response = await apiClient.get(`clientes/${id}`)
-            console.log(response.data);
             return response.data
 
         } catch (error) {
@@ -87,27 +83,22 @@ export const apiRest = {
             console.log(error);
         }
     },
-
-    updateOneClient: async (data) => {
+    updateOneClient: async (id, data) => {
         try {
-            console.log(data);
-            const response = await apiClient.patch(`clientes/${data.id}`, data)
-            console.log(response.data);
-            // return response.data
-
+            console.log(id, data);
+            const response = await apiClient.put(`clientes/${id}`, data)
+            console.log(response);
+            return response
         } catch (error) {
             console.log(error);
 
         }
     },
 
-
     //    CRUD DE PEDIDOSS ---------------------------------------------------------
     createOneOrder: async (formData) => {
         try {
-            console.log(formData);
             const response = await apiOrder.post(`pedidos`, formData)
-            console.log(response);
             return response
 
         } catch (error) {
@@ -147,6 +138,28 @@ export const apiRest = {
             return response
         } catch (error) {
             console.log(error);
+        }
+    },
+    updateOneOrder: async (id, data) => {
+        try {
+            console.log(id, data);
+            const response = await apiOrder.put(`pedidos/${id}`, data)
+            console.log(response);
+            return response
+        } catch (error) {
+            console.log(error);
+
+        }
+    },
+    updateOrderDone: async (id, data) => {
+        try {
+            console.log(id, data);
+            const response = await apiOrder.put(`pedidos/${id}/entregado`, data)
+            console.log(response);
+            return response
+        } catch (error) {
+            console.log(error);
+
         }
     },
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { Box, Button, Grid, Typography, IconButton, Avatar, TextField } from '@mui/material';
+import { Box, Button, Grid, Typography, IconButton, Avatar, TextField, DialogContent, Dialog, DialogTitle, DialogContentText, DialogActions } from '@mui/material';
 import { useRouter } from 'next/router';
 import UndoIcon from '@mui/icons-material/Undo';
 import Link from 'next/link';
@@ -9,6 +9,22 @@ import { apiRest } from '@/pages/api/api';
 export default function Order() {
     const [open, setOpen] = useState(false)
     const [order, setOrder] = useState()
+    const [clients, setClients] = useState()
+    const [trucks, setTrucks] = useState()
+    const [openAlert, setOpenAlert] = useState(false)
+
+    const handleGoBack = () => {
+        window.history.back()
+    };
+
+    const handleOpenAlert = () => {
+        setOpenAlert(true)
+    }
+
+    const handleCloseAlert = () => {
+        setOpenAlert(false)
+    }
+
 
     const handleOpen = () => {
         setOpen(true)
@@ -20,24 +36,41 @@ export default function Order() {
     const router = useRouter()
 
     const handleDelete = async () => {
+        // const verify = trucks?.map((truck) => {
+        //     return truck.pedidos.some((pedido) => {
+        //         return pedido.id === order.id;
+        //     })
+
+        // })
+        // if (verify) {
+        //     handleOpenAlert()
+
+        //     console.log('elemento con true');
+
+        // } else {
+        //     console.log('se tiene que borrar');
         const res = await apiRest.deleteOneOrder(order?.id)
         if (res.status === 201 || res.status === 200) {
             router.push({ pathname: `/home-admin` })
 
         }
+        // }
+
     }
 
     const fetchData = useCallback(async () => {
         const idUser = parseInt(router.query.id)
         const res = await apiRest.getOneOrders(idUser)
-
+        const resClient = await apiRest.getClient()
+        const resTrucks = await apiRest.getTruck()
+        setTrucks(resTrucks)
+        setClients(resClient)
         setOrder(res)
     }, [router])
 
     useEffect(() => {
         fetchData()
     }, [fetchData])
-
 
     return (
         <>
@@ -46,7 +79,44 @@ export default function Order() {
                     open={open}
                     handleClose={handleClose}
                     order={order}
+                    clients={clients}
+                    trucks={trucks}
                 />
+
+
+
+
+
+
+
+                <Dialog
+                    open={openAlert}
+                    onClose={handleCloseAlert}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"Seguro que desea eliminar el pedido que se encuentra dentro de un camion?"}
+                    </DialogTitle>
+
+                    <DialogActions>
+                        <Button onClick={handleCloseAlert}>cancelar</Button>
+                        <Button onClick={handleCloseAlert} autoFocus>
+                            Eliminar
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
+
+
+
+
+
+
+
+
+
+
                 <Grid container>
                     <Grid item xs={3}>
                         <Box bgcolor='#0c5eaf' style={{ justifyContent: 'flex-start' }}>
@@ -68,12 +138,12 @@ export default function Order() {
                         <Button className='boxContainerCliente' onClick={handleDelete} style={{ justifyContent: 'flex-start' }}>
                             <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Eliminar Pedido</Typography>
                         </Button>
-                        <Link className='boxContainerCliente' href={'/home-admin'}>
-                            <Button style={{ justifyContent: 'flex-start' }}>
-                                <UndoIcon />
-                                <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Volver Atras</Typography>
-                            </Button>
-                        </Link>
+                        {/* <Link className='boxContainerCliente' href={'/home-admin'}> */}
+                        <Button onClick={handleGoBack} style={{ justifyContent: 'flex-start' }}>
+                            <UndoIcon />
+                            <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Volver Atras</Typography>
+                        </Button>
+                        {/* </Link> */}
                     </Grid>
                     {/* <Grid item xs={9} sx={{ backgroundImage: 'url("/img/camion.jpg")', backgroundSize: 'cover', }}> */}
                     <Grid item xs={9} sx={{ backgroundImage: 'url("/img/camion.jpg")', px: 10, pt: 2, }}>

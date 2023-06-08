@@ -18,6 +18,8 @@ export default function HomeAdmin() {
     const [clientes, setClientes] = useState()
     const [openModalCreateOrder, setOpenModalCreateOrder] = useState(false)
     const [openModalTruck, setOpenModalTruck] = useState(false)
+    const [statePedido, setStatePedido] = useState('nroPedido')
+
 
     const handleOpenModalTruck = () => {
         setOpenModalTruck(true)
@@ -66,6 +68,7 @@ export default function HomeAdmin() {
         setClientes(resClient)
         setPedidos(restOrders)
     }
+    console.log(pedidos);
 
     useEffect(() => {
         axiosData()
@@ -103,12 +106,19 @@ export default function HomeAdmin() {
                                 <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', marginTop: '3px', marginBottom: '3px', padding: '10px' }}>Camiones</Typography>
                             </Box>
                         </Grid>
-                        :
-                        <Grid item xs={9}>
-                            <Box bgcolor='#1976d2' style={{ justifyContent: 'flex-start', }}>
-                                <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', marginTop: '3px', marginBottom: '3px', padding: '10px' }}>Clientes</Typography>
-                            </Box>
-                        </Grid>
+                        : state === 'usuario'
+                            ?
+                            <Grid item xs={9}>
+                                <Box bgcolor='#1976d2' style={{ justifyContent: 'flex-start', }}>
+                                    <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', marginTop: '3px', marginBottom: '3px', padding: '10px' }}>Clientes</Typography>
+                                </Box>
+                            </Grid>
+                            :
+                            <Grid item xs={9}>
+                                <Box bgcolor='#1976d2' style={{ justifyContent: 'flex-start', }}>
+                                    <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', marginTop: '3px', marginBottom: '3px', padding: '10px' }}>Pedidos</Typography>
+                                </Box>
+                            </Grid>
                     }
                 </Grid>
                 <Grid container>
@@ -121,6 +131,9 @@ export default function HomeAdmin() {
                         </Button>
                         <Button className='boxContainerHomeAdmin' style={{ justifyContent: 'flex-start' }} onClick={() => setState('usuario')}>
                             <Typography variant='subtitle2' sx={{ textTransform: 'capitalize' }}>Ver Cliente</Typography>
+                        </Button>
+                        <Button className='boxContainerHomeAdmin' style={{ justifyContent: 'flex-start' }} onClick={() => setState('pedido')}>
+                            <Typography variant='subtitle2' sx={{ textTransform: 'capitalize' }}>Ver Pedidos</Typography>
                         </Button>
                         <Button className='boxContainerHomeAdmin' style={{ justifyContent: 'flex-start' }} onClick={() => setState('camion')}>
                             <Typography variant='subtitle2' sx={{ textTransform: 'capitalize' }}>Camiones</Typography>
@@ -154,25 +167,136 @@ export default function HomeAdmin() {
                                     </Button>
                                 </Grid>
                             </Grid>
-                            :
-                            <Grid container>
-                                {clientes?.map((cliente, index) => {
-                                    return (
-                                        < Grid key={index} item xs={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                            <Button className='truck' variant='outlined' onClick={() => handleClient(cliente)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
-                                                <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Usuario: {cliente.id}</Typography>
-                                                <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Nombre: {cliente.nombre}</Typography>
-                                                <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Apellido: {cliente.apellido} </Typography>
-                                                <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Direccion: {cliente.direccion}</Typography>
-                                                <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Corre: {cliente.email}</Typography>
+                            : state === 'usuario'
+                                ?
+                                <Grid container>
+                                    {clientes?.map((cliente, index) => {
+                                        return (
+                                            < Grid key={index} item xs={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                <Button className='truck' variant='outlined' onClick={() => handleClient(cliente)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
+                                                    <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Usuario: {cliente.id}</Typography>
+                                                    <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Nombre: {cliente.nombre}</Typography>
+                                                    <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Apellido: {cliente.apellido} </Typography>
+                                                    <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Direccion: {cliente.direccion}</Typography>
+                                                    <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Corre: {cliente.email}</Typography>
 
-                                            </Button>
-                                        </Grid>
-                                    )
-                                })
-                                }
+                                                </Button>
+                                            </Grid>
+                                        )
+                                    })
+                                    }
 
-                            </Grid>
+                                </Grid>
+                                :
+                                <Box>
+                                    <Button onClick={() => setStatePedido('enCamion')}>en camion</Button>
+                                    <Button onClick={() => setStatePedido('nroPedido')}>por n° pedido</Button>
+                                    <Button onClick={() => setStatePedido('finalizado')}>Entregados</Button>
+                                    <Button onClick={() => setStatePedido('clienteNombre')}>Cliente</Button>
+                                    <Button onClick={() => setStatePedido('todos')}>todos</Button>
+                                    {
+                                        statePedido === 'clienteNombre'
+                                            ?
+                                            <Grid container>
+                                                {pedidos //ordena por nombre
+                                                    ?.sort((a, b) => a.clienteNombre.localeCompare(b.clienteNombre))
+                                                    .map((pedido, index) => {
+                                                        return (
+                                                            < Grid key={index} item xs={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                                <Button className='truck' variant='outlined' onClick={() => handleClient(pedido)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
+                                                                    <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>ID: {pedido.id}</Typography>
+                                                                    <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>cliente Nombre: {pedido.clienteNombre}</Typography>
+                                                                    <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Destino: {pedido.destino} </Typography>
+                                                                    <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>nroPedido: {pedido.nroPedido}</Typography>
+                                                                </Button>
+                                                            </Grid>
+                                                        )
+                                                    })
+                                                }
+
+                                            </Grid>
+                                            : statePedido === 'nroPedido'
+                                                ?
+                                                <Grid container>
+                                                    {pedidos //ordena por nombre
+                                                        ?.sort((a, b) => a.nroPedido - b.nroPedido)
+                                                        .map((pedido, index) => {
+                                                            return (
+                                                                < Grid key={index} item xs={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                                    <Button className='truck' variant='outlined' onClick={() => handleClient(pedido)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
+                                                                        <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>ID: {pedido.id}</Typography>
+                                                                        <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>cliente Nombre: {pedido.clienteNombre}</Typography>
+                                                                        <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Destino: {pedido.destino} </Typography>
+                                                                        <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>nroPedido: {pedido.nroPedido}</Typography>
+                                                                    </Button>
+                                                                </Grid>
+                                                            )
+                                                        })
+                                                    }
+
+                                                </Grid>
+                                                : statePedido === 'enCamion'
+                                                    ?
+                                                    <Grid container>
+                                                        {pedidos //ordena por nombre
+                                                            // ?.filter((a) => a.camionId || undefined)
+                                                            ?.filter((a) => a.entregado === false)
+                                                            .map((pedido, index) => {
+                                                                return (
+                                                                    < Grid key={index} item xs={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                                        <Button className='truck' variant='outlined' onClick={() => handleClient(pedido)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
+                                                                            <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>ID: {pedido.id}</Typography>
+                                                                            <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>cliente Nombre: {pedido.clienteNombre}</Typography>
+                                                                            <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Destino: {pedido.destino} </Typography>
+                                                                            <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>nroPedido: {pedido.nroPedido}</Typography>
+                                                                        </Button>
+                                                                    </Grid>
+                                                                )
+                                                            })
+                                                        }
+
+                                                    </Grid>
+                                                    : statePedido === 'finalizado'
+                                                        ?
+                                                        <Grid container>
+                                                            {pedidos //ordena por nombre
+                                                                ?.filter((a) => a.entregado === true)
+                                                                .map((pedido, index) => {
+                                                                    return (
+                                                                        < Grid key={index} item xs={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                                            <Button className='truck' variant='outlined' onClick={() => handleClient(pedido)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
+                                                                                <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>ID: {pedido.id}</Typography>
+                                                                                <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>cliente Nombre: {pedido.clienteNombre}</Typography>
+                                                                                <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Destino: {pedido.destino} </Typography>
+                                                                                <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>nroPedido: {pedido.nroPedido}</Typography>
+                                                                            </Button>
+                                                                        </Grid>
+                                                                    )
+                                                                })
+                                                            }
+
+                                                        </Grid>
+                                                        : statePedido === 'todos'
+                                                        &&
+                                                        <Grid container>
+                                                            {pedidos
+                                                                .map((pedido, index) => {
+                                                                    return (
+                                                                        < Grid key={index} item xs={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                                            <Button className='truck' variant='outlined' onClick={() => handleClient(pedido)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
+                                                                                <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>ID: {pedido.id}</Typography>
+                                                                                <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>cliente Nombre: {pedido.clienteNombre}</Typography>
+                                                                                <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Destino: {pedido.destino} </Typography>
+                                                                                <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>nroPedido: {pedido.nroPedido}</Typography>
+                                                                            </Button>
+                                                                        </Grid>
+                                                                    )
+                                                                })
+                                                            }
+
+                                                        </Grid>
+                                    }
+                                </Box>
                         }
                     </Grid>
                 </Grid >

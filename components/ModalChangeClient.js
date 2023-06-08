@@ -14,13 +14,15 @@ const ModalChangeClient = ({ open, handleClose, client }) => {
 
     const handleModifClient = async () => {
         const dataFinalClient = {
-            id: client?.id,
             nombre: !dataClient.nombre ? client.nombre : dataClient.nombre,
             apellido: !dataClient.apellido ? client.apellido : dataClient.apellido,
             direccion: !dataClient.direccion ? client.direccion : dataClient.direccion,
             email: !dataClient.email ? client.email : dataClient.email
         }
-        const res = await apiRest.updateOneClient(dataFinalClient)
+        const res = await apiRest.updateOneClient(client?.id, dataFinalClient)
+        if (res.status === 200 || res.status === 201) {
+            handleClose()
+        }
     }
     return (
         <>

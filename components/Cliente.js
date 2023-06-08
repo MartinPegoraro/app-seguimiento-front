@@ -22,7 +22,7 @@ export default function Cliente() {
 
     const handleDelete = async () => {
         const res = await apiRest.deleteOneClient(client.id)
-        if (res.status === '201') {
+        if (res.status === 201) {
             router.push('/home-admin')
         }
     }
@@ -32,7 +32,7 @@ export default function Cliente() {
         const res = await apiRest.getOneClient(idUser)
         const resOrder = await apiRest.getOrders()
         resOrder.map((order) => {
-            if (order.clienteId === res.id && order.camionId === undefined) {
+            if (order?.clienteId === res?.id && order?.camionId === undefined) {
                 setExistOrder(true)
             }
         })

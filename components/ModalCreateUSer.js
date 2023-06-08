@@ -24,7 +24,6 @@ const ModalCreateUser = ({ handleCloseModal, openModal }) => {
 
     const handleCreateClient = async () => {
         const res = await apiRest.createOneClient(formData)
-        console.log(res?.status);
         if (res?.status === 201) {
             handleCloseModal()
         }

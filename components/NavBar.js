@@ -6,7 +6,6 @@ import InfoIcon from '@mui/icons-material/Info';
 import CallIcon from '@mui/icons-material/Call';
 import Link from 'next/link';
 export default function NavBar({ state }) {
-    console.log(state);
     return (
         <>
             <Box sx={{ width: '100%', border: '1px solid black', borderRadius: 1, bgcolor: 'white' }}>

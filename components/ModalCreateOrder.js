@@ -58,11 +58,11 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
 
 
     const handleSubmit = async () => {
-        const res = await apiRest.createOneOrder(formData)
-        console.log(res);
-        if (res?.status === 201) {
-            handleCloseModalCreateOrder()
-        }
+        console.log(formData);
+        // const res = await apiRest.createOneOrder(formData)
+        // if (res?.status === 201) {
+        //     handleCloseModalCreateOrder()
+        // }
     }
     return (
         <>
@@ -96,13 +96,14 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
                             >
                                 {clientes?.map((cliente, index) => {
                                     return (
-
-                                        <MenuItem key={index} value={cliente.id}>{cliente.nombre}</MenuItem>
+                                        <MenuItem key={index} value={cliente.id}>{cliente.nombre} {cliente.apellido}</MenuItem>
                                     )
                                 })}
 
                             </Select>
                         </FormControl>
+
+
                         <Tooltip title="Crear nuevo cliente" arrow >
                             <Button onClick={handleOpenModal} sx={{ mt: 1, padding: 2 }}>
                                 <PersonAddIcon />

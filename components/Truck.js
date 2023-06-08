@@ -8,6 +8,7 @@ import { apiRest } from '@/pages/api/api';
 
 export default function Truck() {
     const [truck, setTruck] = useState()
+
     // const [alert, setAlert] = useState(false)
 
     const router = useRouter()
@@ -19,13 +20,16 @@ export default function Truck() {
         }
     }
 
+    const handleChangeDone = async (id) => {
+        const state = { entregado: true }
+        const res = await apiRest.updateOrderDone(id, state)
+    }
+
     const handleOneOrders = (id) => {
         router.push(`/home-admin/pedido/${id}`)
     }
-
     const fetchData = useCallback(async () => {
         const idUser = parseInt(router?.query?.id)
-        console.log(idUser);
         const res = await apiRest.getOneTruck(idUser)
         setTruck(res)
     }, [router])
@@ -87,7 +91,7 @@ export default function Truck() {
                                         <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Destino: {pedido?.destino}</Typography>
                                         <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Fecha estimada de llegada: {pedido?.fechaEstimada}</Typography>
                                     </Button>
-                                    <Button variant='contained' sx={{
+                                    <Button onClick={() => handleChangeDone(pedido.id)} variant='contained' sx={{
                                         width: '50%', height: '2vh', m: 12, mt: 0, p: 2, bgcolor: 'white', color: 'black',
                                         '&:hover': {
                                             bgcolor: 'rgb(0, 34, 128)',
