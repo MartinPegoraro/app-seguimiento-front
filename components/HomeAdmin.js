@@ -68,7 +68,6 @@ export default function HomeAdmin() {
         setClientes(resClient)
         setPedidos(restOrders)
     }
-    console.log(pedidos);
 
     useEffect(() => {
         axiosData()

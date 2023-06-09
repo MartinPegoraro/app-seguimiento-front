@@ -1,5 +1,5 @@
 import { apiRest } from '@/pages/api/api'
-import { Modal, Box, TextField, Button, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material'
+import { Modal, Box, TextField, Button, Typography, Select, MenuItem, FormControl, InputLabel, Autocomplete } from '@mui/material'
 import React, { useState } from 'react'
 export default function ModalChangeOrders({ open, handleClose, order, clients, trucks }) {
     const [dataOrder, setDataOrder] = useState({ id: '', destino: '', camion: { id: '' }, cliente: { id: '' }, fechaEstimada: '' })
@@ -14,17 +14,6 @@ export default function ModalChangeOrders({ open, handleClose, order, clients, t
         });
     }
 
-    const handleChange = (event) => {
-        setSelectedOptionTruck(event.target.value);
-        setDataOrder({ ...dataOrder, camion: { id: event.target.value } })
-    };
-
-    const handleChangeClient = (event) => {
-        setSelectedOptionClient(event.target.value);
-        setDataOrder({ ...dataOrder, cliente: { id: event.target.value } })
-    };
-
-
     const handleModifOrder = async () => {
         const dataFinalOrder = {
             destino: !dataOrder.destino ? order.destino : dataOrder.destino,
@@ -32,6 +21,7 @@ export default function ModalChangeOrders({ open, handleClose, order, clients, t
             camion: { id: !dataOrder.camion.id ? order.camionId : dataOrder.camion.id },
             fechaEstimada: !dataOrder.fechaEstimada ? order.fechaEstimada : dataOrder.fechaEstimada,
         }
+        console.log(dataFinalOrder);
         const res = await apiRest.updateOneOrder(order?.id, dataFinalOrder)
         console.log(res?.status);
         if (res.status === 200 || res.status === 201) {
@@ -39,6 +29,18 @@ export default function ModalChangeOrders({ open, handleClose, order, clients, t
             handleClose()
         }
     }
+
+    const handleInputChange = (event, value) => {
+        setSelectedOptionClient(value);
+        setDataOrder({ ...dataOrder, cliente: { id: value ? value.id : '' } });
+    };
+    const handleInputChangeTruck = (event, value) => {
+        setSelectedOptionTruck(value);
+        setDataOrder({ ...dataOrder, camion: { id: value ? value.id : '' } });
+    };
+
+
+
     return (
         <>
             <Modal
@@ -59,24 +61,33 @@ export default function ModalChangeOrders({ open, handleClose, order, clients, t
                     />
 
                     <Typography>Cliente</Typography>
-                    <FormControl sx={{ m: 1, width: '70%' }}>
-                        <InputLabel id="select-label">{order?.clienteNombre}</InputLabel>
-                        <Select
-                            labelId="select-label"
-                            value={selectedOptionClient}
-                            name='cliente_id'
-                            onChange={handleChangeClient}
-                        >
-                            {clients?.map((cliente, index) => {
-                                return (
-                                    <MenuItem key={index} value={cliente.id}>{cliente.nombre} {cliente.apellido}</MenuItem>
-                                )
-                            })}
+                    <Autocomplete
 
-                        </Select>
-                    </FormControl>
+                        sx={{ width: '70%', margin: 'auto', }}
+                        options={clients}
+                        getOptionLabel={(cliente) => cliente ? `${cliente.nombre} ${cliente.apellido}` : ''}
+                        value={selectedOptionClient}
+                        onChange={handleInputChange}
+                        renderInput={(params) => (
+                            <TextField {...params} label={order?.clienteNombre} />
+                        )}
+                    />
 
                     <Typography>Camion</Typography>
+                    <Autocomplete
+
+                        sx={{ width: '70%', margin: 'auto', }}
+                        options={trucks}
+                        getOptionLabel={(camion) => camion ? `${camion.marca}` : ''}
+                        value={selectedOptionTruck}
+                        onChange={handleInputChangeTruck}
+                        renderInput={(params) => (
+                            <TextField {...params} label={order?.destino} />
+                        )}
+                    />
+
+
+                    {/* <Typography>Camion</Typography>
                     <FormControl sx={{ m: 1, width: '70%' }}>
                         <InputLabel id="select-label">Camion {order?.camionId}</InputLabel>
                         <Select
@@ -92,7 +103,7 @@ export default function ModalChangeOrders({ open, handleClose, order, clients, t
                             })}
 
                         </Select>
-                    </FormControl>
+                    </FormControl> */}
 
                     <Typography>Fecha estimada de llegada</Typography>
                     <TextField

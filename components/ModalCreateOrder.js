@@ -15,14 +15,20 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
     const [selectedOptionClient, setSelectedOptionClient] = useState('');
     const [openModal, setOpenModal] = useState(false)
 
+
+    const handleInputChange = (event, value) => {
+        setSelectedOptionClient(value);
+        setFormData({ ...formData, cliente: { id: value ? value.id : '' } });
+    };
+
     const handleChange = (event) => {
         setSelectedOptionTruck(event.target.value);
         setFormData({ ...formData, camion: { id: event.target.value } })
     };
-    const handleChangeClient = (event) => {
-        setSelectedOptionClient(event.target.value);
-        setFormData({ ...formData, cliente: { id: event.target.value } })
-    };
+    // const handleInputChange = (event) => {
+    //     setSelectedOptionClient(event.target.value);
+    //     setFormData({ ...formData, cliente: { id: event.target.value } })
+    // };
 
     const onInputChange = ({ target }) => {
         const { name, value } = target;
@@ -40,29 +46,13 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
         setOpenModal(false)
     }
 
-    // ---------------------------------------------AUTOCOMPLETAR----------------------------------------------------
-    // const handleAutocompleteChange = (event, value) => {
-    //     setSelectedOption(value);
-    //     // Lógica para rellenar los demás campos con los datos restantes
-    //     const selectedData = usuarios.find((option) => option?.nombre === value?.nombre);
-    //     console.log(envent, value);
-    //     console.log(selectedData);
-    //     if (selectedData) {
-    //         console.log('1');
-    //         setOtherField1(selectedData);
-    //     } else {
-    //         console.log('2');
-    //         setOtherField1('');
-    //     }
-    // };
 
 
     const handleSubmit = async () => {
-        console.log(formData);
-        // const res = await apiRest.createOneOrder(formData)
-        // if (res?.status === 201) {
-        //     handleCloseModalCreateOrder()
-        // }
+        const res = await apiRest.createOneOrder(formData)
+        if (res?.status === 201) {
+            handleCloseModalCreateOrder()
+        }
     }
     return (
         <>
@@ -84,24 +74,19 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
                     <Typography>Crear un nuevo pedido para un cliente</Typography>
                     <Box sx={{ textAlign: 'center' }}>
 
-                        {/* <Grid container > */}
-                        {/* <Grid item xs={8}> */}
-                        <FormControl sx={{ m: 1, width: '57%' }}>
-                            <InputLabel id="select-label">Selecciona un cliente</InputLabel>
-                            <Select
-                                labelId="select-label"
-                                value={selectedOptionClient}
-                                name='cliente_id'
-                                onChange={handleChangeClient}
-                            >
-                                {clientes?.map((cliente, index) => {
-                                    return (
-                                        <MenuItem key={index} value={cliente.id}>{cliente.nombre} {cliente.apellido}</MenuItem>
-                                    )
-                                })}
 
-                            </Select>
-                        </FormControl>
+                        <Typography>Cliente</Typography>
+                        <Autocomplete
+
+                            sx={{ width: '57%', margin: 1 }}
+                            options={clientes}
+                            getOptionLabel={(cliente) => cliente ? `${cliente.nombre} ${cliente.apellido}` : ''}
+                            value={selectedOptionClient}
+                            onChange={handleInputChange}
+                            renderInput={(params) => (
+                                <TextField {...params} label='Cliente' />
+                            )}
+                        />
 
 
                         <Tooltip title="Crear nuevo cliente" arrow >
@@ -167,16 +152,6 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
                         }}
                         label="Fecha estimada de llegada"
                     />
-
-                    {/* <FormControl sx={{ m: 1, width: '70%' }}>
-                        <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={clientes}
-                            getOptionLabel={(cliente) => cliente?.nombre}
-                            renderInput={(params) => <TextField {...params} label="Selecciona un cliente" />}
-                        />
-                    </FormControl> */}
 
                     <Grid container sx={{ justifyContent: 'center' }}>
                         <Grid item>
