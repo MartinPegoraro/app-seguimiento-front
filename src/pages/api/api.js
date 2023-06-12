@@ -162,5 +162,15 @@ export const apiRest = {
 
         }
     },
+    createStateOrder: async (id, data) => {
+        try {
+            const response = await apiOrder.post(`pedidos/${id}/estados`, data)
+            console.log(response);
+            // return response
+        } catch (error) {
+            console.log(error);
+
+        }
+    },
 
 }

@@ -39,8 +39,6 @@ export default function ModalChangeOrders({ open, handleClose, order, clients, t
         setDataOrder({ ...dataOrder, camion: { id: value ? value.id : '' } });
     };
 
-
-
     return (
         <>
             <Modal
@@ -82,7 +80,7 @@ export default function ModalChangeOrders({ open, handleClose, order, clients, t
                         value={selectedOptionTruck}
                         onChange={handleInputChangeTruck}
                         renderInput={(params) => (
-                            <TextField {...params} label={order?.destino} />
+                            <TextField {...params} label={order?.camionId} />
                         )}
                     />
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Button, Grid, Typography, IconButton, Avatar, TextField } from '@mui/material';
+import { Box, Button, Grid, Typography, IconButton, Avatar, TextField, ButtonGroup } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Image from 'next/image';
 import ModalCreateUser from './ModalCreateUser'
@@ -20,6 +20,7 @@ export default function HomeAdmin() {
     const [openModalTruck, setOpenModalTruck] = useState(false)
     const [statePedido, setStatePedido] = useState('nroPedido')
 
+    const router = useRouter()
 
     const handleOpenModalTruck = () => {
         setOpenModalTruck(true)
@@ -29,7 +30,6 @@ export default function HomeAdmin() {
         setOpenModalTruck(false)
     }
 
-    const router = useRouter()
 
     const handleOpenModalCreateOrder = () => {
         setOpenModalCreateOrder(true)
@@ -42,6 +42,7 @@ export default function HomeAdmin() {
     const handleOpenModal = () => {
         setOpenModal(true)
     }
+
     const handleCloseModal = () => {
         setOpenModal(false)
     }
@@ -85,7 +86,6 @@ export default function HomeAdmin() {
                 openModal={openModal}
 
             />
-
             <ModalCreateTruck
                 handleCloseModalTruck={handleCloseModalTruck}
                 openModalTruck={openModalTruck}
@@ -188,11 +188,13 @@ export default function HomeAdmin() {
                                 </Grid>
                                 :
                                 <Box>
-                                    <Button onClick={() => setStatePedido('enCamion')}>en camion</Button>
-                                    <Button onClick={() => setStatePedido('nroPedido')}>por n° pedido</Button>
-                                    <Button onClick={() => setStatePedido('finalizado')}>Entregados</Button>
-                                    <Button onClick={() => setStatePedido('clienteNombre')}>Cliente</Button>
-                                    <Button onClick={() => setStatePedido('todos')}>todos</Button>
+                                    <ButtonGroup fullWidth sx={{ mt: 2 }}>
+                                        <Button variant='contained' sx={{ margin: '0.5rem' }} onClick={() => setStatePedido('enCamion')}>en camion</Button>
+                                        <Button variant='contained' sx={{ margin: '0.5rem' }} onClick={() => setStatePedido('nroPedido')}>por n° pedido</Button>
+                                        <Button variant='contained' sx={{ margin: '0.5rem' }} onClick={() => setStatePedido('finalizado')}>Entregados</Button>
+                                        <Button variant='contained' sx={{ margin: '0.5rem' }} onClick={() => setStatePedido('clienteNombre')}>Cliente</Button>
+                                        <Button variant='contained' sx={{ margin: '0.5rem' }} onClick={() => setStatePedido('todos')}>todos</Button>
+                                    </ButtonGroup>
                                     {
                                         statePedido === 'clienteNombre'
                                             ?

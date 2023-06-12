@@ -25,10 +25,6 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
         setSelectedOptionTruck(event.target.value);
         setFormData({ ...formData, camion: { id: event.target.value } })
     };
-    // const handleInputChange = (event) => {
-    //     setSelectedOptionClient(event.target.value);
-    //     setFormData({ ...formData, cliente: { id: event.target.value } })
-    // };
 
     const onInputChange = ({ target }) => {
         const { name, value } = target;
@@ -72,7 +68,7 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
                         <ArrowBackIcon />
                     </Button>
                     <Typography>Crear un nuevo pedido para un cliente</Typography>
-                    <Box sx={{ textAlign: 'center' }}>
+                    {/* <Box sx={{ textAlign: 'center' }}>
 
 
                         <Typography>Cliente</Typography>
@@ -94,12 +90,40 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
                                 <PersonAddIcon />
                             </Button>
                         </Tooltip>
+                    </Box> */}
+                    <Box sx={{ textAlign: 'center', width: '70%', margin: '0 auto' }}>
+
+                        <Typography>Cliente</Typography>
+                        <Grid container alignItems="center" justifyContent="center" sx={{ textAlign: 'center' }}>
+                            <Grid item xs={9}>
+                                <Autocomplete
+                                    sx={{ width: '100%', margin: 'auto' }}
+                                    options={clientes}
+                                    getOptionLabel={(cliente) => cliente ? `${cliente.nombre} ${cliente.apellido}` : ''}
+                                    value={selectedOptionClient}
+                                    onChange={handleInputChange}
+                                    renderInput={(params) => (
+                                        <TextField {...params} label='Cliente' />
+                                    )}
+                                />
+                            </Grid>
+                            <Grid item xs={3} sx={{ margin: 'auto' }}>
+                                <Tooltip title="Crear nuevo cliente" arrow>
+                                    <Button onClick={handleOpenModal} sx={{ padding: 2 }}>
+                                        <PersonAddIcon />
+                                    </Button>
+                                </Tooltip>
+                            </Grid>
+                        </Grid>
                     </Box>
+
+
+
                     <TextField
                         sx={{ m: 1, width: '70%' }}
                         onChange={onInputChange}
                         name='destino'
-                        label='destino'
+                        label='Destino'
                         value={formData.destino}
                         size='small'
                         required

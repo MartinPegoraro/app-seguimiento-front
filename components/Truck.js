@@ -5,13 +5,23 @@ import UndoIcon from '@mui/icons-material/Undo';
 import Link from 'next/link';
 import ModalChangeClient from './ModalChangeClient';
 import { apiRest } from '@/pages/api/api';
+import ModalCreateState from './ModalCreateState';
 
 export default function Truck() {
     const [truck, setTruck] = useState()
+    const [open, setOpen] = useState(false)
 
     // const [alert, setAlert] = useState(false)
 
     const router = useRouter()
+
+    const handleOpen = () => {
+        setOpen(true)
+    }
+
+    const handleClose = () => {
+        setOpen(false)
+    }
 
     const handleDelete = async () => {
         const res = await apiRest.deleteOneTruck(truck?.id)
@@ -23,11 +33,15 @@ export default function Truck() {
     const handleChangeDone = async (id) => {
         const state = { entregado: true }
         const res = await apiRest.updateOrderDone(id, state)
+        if (res.status === 200 || res.status === 201) {
+
+        }
     }
 
     const handleOneOrders = (id) => {
         router.push(`/home-admin/pedido/${id}`)
     }
+
     const fetchData = useCallback(async () => {
         const idUser = parseInt(router?.query?.id)
         const res = await apiRest.getOneTruck(idUser)
@@ -40,12 +54,11 @@ export default function Truck() {
 
     return (
         <Box sx={{ width: '100%', height: '100vh', position: 'relative', display: 'inline-block', }}>
-            {/* {alert &&
-
-                <Alert severity="warning">
-                    No se pudo eliminar el camion porque contiene pedidos
-                </Alert>
-            } */}
+            <ModalCreateState
+                open={open}
+                handleClose={handleClose}
+                orders={truck?.pedidos}
+            />
             <Grid container>
                 <Grid item xs={3}>
                     <Box bgcolor='#0c5eaf' style={{ justifyContent: 'flex-start' }}>
@@ -67,6 +80,9 @@ export default function Truck() {
                             <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Volver Atras</Typography>
                         </Button>
                     </Link>
+                    <Button className='boxContainerCliente' style={{ justifyContent: 'flex-start' }} onClick={handleOpen}>
+                        <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Agregar Lugar</Typography>
+                    </Button>
                     {truck?.pedidos?.length === 0 || undefined
                         ?
                         <Button className='boxContainerCliente' style={{ justifyContent: 'flex-start' }} onClick={handleDelete}>
