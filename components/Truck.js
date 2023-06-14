@@ -25,17 +25,18 @@ export default function Truck() {
 
     const handleDelete = async () => {
         const res = await apiRest.deleteOneTruck(truck?.id)
-        if (res?.status === 200) {
+        if (res?.status === 200 || res.status === 201) {
             router.push({ pathname: `/home-admin` })
         }
     }
 
     const handleChangeDone = async (id) => {
-        const state = { entregado: true }
-        const res = await apiRest.updateOrderDone(id, state)
-        if (res.status === 200 || res.status === 201) {
 
-        }
+        // const state = { entregado: true }
+        // const res = await apiRest.updateOrderDone(id, state)
+        // if (res.status === 200 || res.status === 201) {
+
+        // }
     }
 
     const handleOneOrders = (id) => {
@@ -90,9 +91,11 @@ export default function Truck() {
                         </Button>
                         :
                         <Tooltip title="Esta es la información del botón" arrow>
-                            <Button className='boxContainerCliente' disabled style={{ justifyContent: 'flex-start' }}>
-                                <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Eliminar camion (contiene pedidos) </Typography>
-                            </Button>
+                            <span>
+                                <Button className='boxContainerCliente' disabled style={{ justifyContent: 'flex-start' }}>
+                                    <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Eliminar camion (contiene pedidos) </Typography>
+                                </Button>
+                            </span>
                         </Tooltip>
                     }
                 </Grid>

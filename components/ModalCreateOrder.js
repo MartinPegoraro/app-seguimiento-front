@@ -109,9 +109,12 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
                             </Grid>
                             <Grid item xs={3} sx={{ margin: 'auto' }}>
                                 <Tooltip title="Crear nuevo cliente" arrow>
-                                    <Button onClick={handleOpenModal} sx={{ padding: 2 }}>
-                                        <PersonAddIcon />
-                                    </Button>
+                                    <span>
+
+                                        <Button onClick={handleOpenModal} sx={{ padding: 2 }}>
+                                            <PersonAddIcon />
+                                        </Button>
+                                    </span>
                                 </Tooltip>
                             </Grid>
                         </Grid>
