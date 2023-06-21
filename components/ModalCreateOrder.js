@@ -9,7 +9,7 @@ import ModalCreateUser from './ModalCreateUser';
 
 
 const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, camiones, clientes }) => {
-    const [formData, setFormData] = useState({ fechaSalida: '', fechaEstimada: '', destino: '', camion: { id: '' }, cliente: { id: '' }, entregado: false })
+    const [formData, setFormData] = useState({ fechaSalida: '', fechaEstimada: '', destino: '', descripcion: '', camion: { id: '' }, cliente: { id: '' }, entregado: false })
 
     const [selectedOptionTruck, setSelectedOptionTruck] = useState('');
     const [selectedOptionClient, setSelectedOptionClient] = useState('');
@@ -42,12 +42,11 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
         setOpenModal(false)
     }
 
-
-
     const handleSubmit = async () => {
         const res = await apiRest.createOneOrder(formData)
         if (res?.status === 201) {
             handleCloseModalCreateOrder()
+            window.location.reload()
         }
     }
     return (
@@ -68,29 +67,7 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
                         <ArrowBackIcon />
                     </Button>
                     <Typography>Crear un nuevo pedido para un cliente</Typography>
-                    {/* <Box sx={{ textAlign: 'center' }}>
 
-
-                        <Typography>Cliente</Typography>
-                        <Autocomplete
-
-                            sx={{ width: '57%', margin: 1 }}
-                            options={clientes}
-                            getOptionLabel={(cliente) => cliente ? `${cliente.nombre} ${cliente.apellido}` : ''}
-                            value={selectedOptionClient}
-                            onChange={handleInputChange}
-                            renderInput={(params) => (
-                                <TextField {...params} label='Cliente' />
-                            )}
-                        />
-
-
-                        <Tooltip title="Crear nuevo cliente" arrow >
-                            <Button onClick={handleOpenModal} sx={{ mt: 1, padding: 2 }}>
-                                <PersonAddIcon />
-                            </Button>
-                        </Tooltip>
-                    </Box> */}
                     <Box sx={{ textAlign: 'center', width: '70%', margin: '0 auto' }}>
 
                         <Typography>Cliente</Typography>
@@ -179,6 +156,17 @@ const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, c
                         }}
                         label="Fecha estimada de llegada"
                     />
+
+                    {/* <TextField
+                        sx={{ m: 1, width: '70%' }}
+                        onChange={onInputChange}
+                        name='descripcion'
+                        label='Descripcion del producto'
+                        value={formData.descripcion}
+                        size='small'
+                        required
+                        id="outlined-required"
+                    /> */}
 
                     <Grid container sx={{ justifyContent: 'center' }}>
                         <Grid item>

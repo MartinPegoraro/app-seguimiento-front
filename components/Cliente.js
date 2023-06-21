@@ -28,15 +28,17 @@ export default function Cliente() {
     }
 
     const fetchData = useCallback(async () => {
-        const idUser = parseInt(router.query.id)
-        const res = await apiRest.getOneClient(idUser)
-        const resOrder = await apiRest.getOrders()
-        resOrder.map((order) => {
-            if (order?.clienteId === res?.id && order?.camionId === undefined) {
-                setExistOrder(true)
-            }
-        })
-        setClient(res)
+        if (router.query.id) {
+            const idUser = parseInt(router.query.id)
+            const res = await apiRest.getOneClient(idUser)
+            const resOrder = await apiRest.getOrders()
+            resOrder.map((order) => {
+                if (order?.clienteId === res?.id && order?.camionId === undefined) {
+                    setExistOrder(true)
+                }
+            })
+            setClient(res)
+        }
     }, [router])
 
     useEffect(() => {

@@ -2,7 +2,7 @@ import { apiRest } from '@/pages/api/api'
 import { Modal, Box, TextField, Button, Typography, Select, MenuItem, FormControl, InputLabel, Autocomplete } from '@mui/material'
 import React, { useState } from 'react'
 export default function ModalChangeOrders({ open, handleClose, order, clients, trucks }) {
-    const [dataOrder, setDataOrder] = useState({ id: '', destino: '', camion: { id: '' }, cliente: { id: '' }, fechaEstimada: '' })
+    const [dataOrder, setDataOrder] = useState({ id: '', destino: '', descripcion: '', camion: { id: '' }, cliente: { id: '' }, fechaEstimada: '' })
     const [selectedOptionTruck, setSelectedOptionTruck] = useState('');
     const [selectedOptionClient, setSelectedOptionClient] = useState('');
 
@@ -16,6 +16,7 @@ export default function ModalChangeOrders({ open, handleClose, order, clients, t
 
     const handleModifOrder = async () => {
         const dataFinalOrder = {
+            // descripcion: !dataOrder.descripcion ? order.descripcion : dataOrder.descripcion,
             destino: !dataOrder.destino ? order.destino : dataOrder.destino,
             cliente: { id: !dataOrder.cliente.id ? order.clienteId : dataOrder.cliente.id },
             camion: { id: !dataOrder.camion.id ? order.camionId : dataOrder.camion.id },
@@ -25,8 +26,8 @@ export default function ModalChangeOrders({ open, handleClose, order, clients, t
         const res = await apiRest.updateOneOrder(order?.id, dataFinalOrder)
         console.log(res?.status);
         if (res.status === 200 || res.status === 201) {
-            console.log('124asdfgasdft');
             handleClose()
+            location.reload()
         }
     }
 
@@ -58,9 +59,20 @@ export default function ModalChangeOrders({ open, handleClose, order, clients, t
                         id="outlined-required"
                     />
 
+                    <Typography>Descripcion del producto</Typography>
+                    <TextField
+                        sx={{ m: 1, width: '70%' }}
+                        onChange={onInputChange}
+                        name='descripcion'
+                        label={order?.descripcion}
+                        value={dataOrder.descripcion}
+                        size='small'
+                        required
+                        id="outlined-required"
+                    />
+
                     <Typography>Cliente</Typography>
                     <Autocomplete
-
                         sx={{ width: '70%', margin: 'auto', }}
                         options={clients}
                         getOptionLabel={(cliente) => cliente ? `${cliente.nombre} ${cliente.apellido}` : ''}
@@ -73,7 +85,6 @@ export default function ModalChangeOrders({ open, handleClose, order, clients, t
 
                     <Typography>Camion</Typography>
                     <Autocomplete
-
                         sx={{ width: '70%', margin: 'auto', }}
                         options={trucks}
                         getOptionLabel={(camion) => camion ? `${camion.marca}` : ''}
@@ -83,7 +94,6 @@ export default function ModalChangeOrders({ open, handleClose, order, clients, t
                             <TextField {...params} label={order?.camionId} />
                         )}
                     />
-
 
                     {/* <Typography>Camion</Typography>
                     <FormControl sx={{ m: 1, width: '70%' }}>

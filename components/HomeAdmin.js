@@ -54,6 +54,10 @@ export default function HomeAdmin() {
         })
     }
 
+    const handlePedido = (pedido) => {
+        router.push(`/home-admin/pedido/${pedido.id}`)
+    }
+
     const handleClient = (cliente) => {
         router.push({
             pathname: `home-admin/cliente/[id]`,
@@ -172,13 +176,10 @@ export default function HomeAdmin() {
                                     {clientes?.map((cliente, index) => {
                                         return (
                                             < Grid key={index} item xs={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                                <Button className='truck' variant='outlined' onClick={() => handleClient(cliente)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
-                                                    <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Usuario: {cliente.id}</Typography>
-                                                    <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Nombre: {cliente.nombre}</Typography>
-                                                    <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Apellido: {cliente.apellido} </Typography>
-                                                    <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Direccion: {cliente.direccion}</Typography>
+                                                <Button className='truck' variant='outlined' onClick={() => handleClient(cliente)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '10vh', m: 5, p: 2, pt: 0.5 }}>
+                                                    <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>ID: {cliente.id}</Typography>
+                                                    <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Cliente: {cliente.nombre} {cliente.apellido}</Typography>
                                                     <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Corre: {cliente.email}</Typography>
-
                                                 </Button>
                                             </Grid>
                                         )
@@ -204,7 +205,7 @@ export default function HomeAdmin() {
                                                     .map((pedido, index) => {
                                                         return (
                                                             < Grid key={index} item xs={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                                                <Button className='truck' variant='outlined' onClick={() => handleClient(pedido)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
+                                                                <Button className='truck' variant='outlined' onClick={() => handlePedido(pedido)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
                                                                     <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>ID: {pedido.id}</Typography>
                                                                     <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>cliente Nombre: {pedido.clienteNombre}</Typography>
                                                                     <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Destino: {pedido.destino} </Typography>
@@ -224,7 +225,7 @@ export default function HomeAdmin() {
                                                         .map((pedido, index) => {
                                                             return (
                                                                 < Grid key={index} item xs={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                                                    <Button className='truck' variant='outlined' onClick={() => handleClient(pedido)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
+                                                                    <Button className='truck' variant='outlined' onClick={() => handlePedido(pedido)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
                                                                         <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>ID: {pedido.id}</Typography>
                                                                         <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>cliente Nombre: {pedido.clienteNombre}</Typography>
                                                                         <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Destino: {pedido.destino} </Typography>
@@ -245,7 +246,7 @@ export default function HomeAdmin() {
                                                             .map((pedido, index) => {
                                                                 return (
                                                                     < Grid key={index} item xs={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                                                        <Button className='truck' variant='outlined' onClick={() => handleClient(pedido)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
+                                                                        <Button className='truck' variant='outlined' onClick={() => handlePedido(pedido)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
                                                                             <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>ID: {pedido.id}</Typography>
                                                                             <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>cliente Nombre: {pedido.clienteNombre}</Typography>
                                                                             <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Destino: {pedido.destino} </Typography>
@@ -265,7 +266,7 @@ export default function HomeAdmin() {
                                                                 .map((pedido, index) => {
                                                                     return (
                                                                         < Grid key={index} item xs={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                                                            <Button className='truck' variant='outlined' onClick={() => handleClient(pedido)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
+                                                                            <Button className='truck' variant='outlined' onClick={() => handlePedido(pedido)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
                                                                                 <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>ID: {pedido.id}</Typography>
                                                                                 <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>cliente Nombre: {pedido.clienteNombre}</Typography>
                                                                                 <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Destino: {pedido.destino} </Typography>
@@ -284,7 +285,7 @@ export default function HomeAdmin() {
                                                                 .map((pedido, index) => {
                                                                     return (
                                                                         < Grid key={index} item xs={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                                                            <Button className='truck' variant='outlined' onClick={() => handleClient(pedido)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
+                                                                            <Button className='truck' variant='outlined' onClick={() => handlePedido(pedido)} sx={{ flexDirection: 'column', justifyContent: 'flex-start', width: '80%', height: '20vh', m: 5, p: 2 }}>
                                                                                 <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>ID: {pedido.id}</Typography>
                                                                                 <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>cliente Nombre: {pedido.clienteNombre}</Typography>
                                                                                 <Typography variant="caption" sx={{ textTransform: 'capitalize', }}>Destino: {pedido.destino} </Typography>

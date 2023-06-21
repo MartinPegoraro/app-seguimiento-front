@@ -22,6 +22,7 @@ const ModalChangeClient = ({ open, handleClose, client }) => {
         const res = await apiRest.updateOneClient(client?.id, dataFinalClient)
         if (res.status === 200 || res.status === 201) {
             handleClose()
+            location.reload()
         }
     }
     return (

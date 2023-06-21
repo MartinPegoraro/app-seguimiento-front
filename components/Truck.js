@@ -1,5 +1,20 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { Box, Button, Grid, Typography, IconButton, Avatar, TextField, Tooltip, Alert } from '@mui/material';
+import {
+    Box,
+    Button,
+    Grid,
+    Typography,
+    IconButton, Avatar,
+    TextField,
+    Tooltip,
+    Alert,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle
+} from '@mui/material';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { Router, useRouter } from 'next/router';
 import UndoIcon from '@mui/icons-material/Undo';
 import Link from 'next/link';
@@ -10,10 +25,14 @@ import ModalCreateState from './ModalCreateState';
 export default function Truck() {
     const [truck, setTruck] = useState()
     const [open, setOpen] = useState(false)
-
-    // const [alert, setAlert] = useState(false)
+    const [openConfirm, setOpenConfirm] = useState(false)
+    const [idOrder, setIdOrder] = useState(false)
 
     const router = useRouter()
+
+    const handleCloseConfirm = () => {
+        setOpenConfirm(false);
+    };
 
     const handleOpen = () => {
         setOpen(true)
@@ -30,13 +49,18 @@ export default function Truck() {
         }
     }
 
-    const handleChangeDone = async (id) => {
+    const handleChangeDone = (id) => {
+        setOpenConfirm(true)
+        setIdOrder(id)
+    }
 
-        // const state = { entregado: true }
-        // const res = await apiRest.updateOrderDone(id, state)
-        // if (res.status === 200 || res.status === 201) {
-
-        // }
+    const handleConfirm = async () => {
+        const state = { entregado: true }
+        const res = await apiRest.updateOrderDone(idOrder, state)
+        if (res.status === 200 || res.status === 201) {
+            handleCloseConfirm()
+            location.reload()
+        }
     }
 
     const handleOneOrders = (id) => {
@@ -44,9 +68,11 @@ export default function Truck() {
     }
 
     const fetchData = useCallback(async () => {
-        const idUser = parseInt(router?.query?.id)
-        const res = await apiRest.getOneTruck(idUser)
-        setTruck(res)
+        if (router.query.id) {
+            const idUser = parseInt(router?.query?.id)
+            const res = await apiRest.getOneTruck(idUser)
+            setTruck(res)
+        }
     }, [router])
 
     useEffect(() => {
@@ -91,8 +117,8 @@ export default function Truck() {
                         </Button>
                         :
                         <Tooltip title="Esta es la información del botón" arrow>
-                            <span>
-                                <Button className='boxContainerCliente' disabled style={{ justifyContent: 'flex-start' }}>
+                            <span >
+                                <Button className='boxContainerCliente' disabled style={{ justifyContent: 'flex-start', width: '100%' }}>
                                     <Typography variant='subtitle2' sx={{ textTransform: 'capitalize', textAlign: 'center' }}>Eliminar camion (contiene pedidos) </Typography>
                                 </Button>
                             </span>
@@ -124,6 +150,34 @@ export default function Truck() {
                 </Grid>
 
             </Grid >
+
+
+            {/* ALERTA DE CONFIRMACION */}
+            <Dialog
+                open={openConfirm}
+                onClose={handleCloseConfirm}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <Box sx={{ border: '2px solid red' }}>
+
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: 5 }}>
+                        <ErrorOutlineIcon sx={{ width: '15vh', height: '15vh', color: 'red' }} />
+                    </div>
+
+                    <DialogTitle id="alert-dialog-title" >
+                        Esta seguro que se entrego el pedido?
+                    </DialogTitle>
+                    <DialogActions sx={{ justifyContent: 'center' }}>
+                        <Button variant='contained' onClick={handleCloseConfirm} sx={{ bgcolor: 'red', color: 'white', '&:hover': { bgcolor: '#FF1E1E' } }}>Cancelar</Button>
+                        <Button variant='contained' onClick={handleConfirm} sx={{ bgcolor: 'green', color: 'white', '&:hover': { bgcolor: '#096203' } }} autoFocus>
+                            Confirmar
+                        </Button>
+                    </DialogActions>
+                </Box>
+            </Dialog>
+
+
         </Box >
     )
 }
