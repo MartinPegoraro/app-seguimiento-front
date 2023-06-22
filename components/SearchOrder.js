@@ -2,42 +2,26 @@ import { Box, Grid, Typography } from '@mui/material'
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import React from 'react'
 
-const pedidos =
-    [
-        {
-            "id": 1,
-            "nroPedido": "1234",
-            "createAt": "2023-05-16",
-            "fechaSalida": "16/05/2023",
-            "fechaEstimada": "19/05/2023",
-            "entregado": false,
-            "estado": "preparando",
-            "clienteNombre": "Ariana Melisa Kremar",
-            "clienteId": 2
-        },
-        {
-            "id": 6,
-            "nroPedido": "5546435",
-            "createAt": "2023-05-16",
-            "fechaSalida": "16/05/2023",
-            "fechaEstimada": "19/05/2023",
-            "entregado": false,
-            "estado": "en camion",
-            "clienteNombre": "Freddy Ferreira",
-            "clienteId": 1
-        },
-        {
-            "id": 7,
-            "nroPedido": "111",
-            "createAt": "2023-05-16",
-            "fechaSalida": "16/05/2023",
-            "fechaEstimada": "19/05/2023",
-            "entregado": false,
-            "estado": "en camion",
-            "clienteNombre": "Ariana Melisa Kremar",
-            "clienteId": 2
-        },
+const pedidos = {
+    "id": 1,
+    "nroPedido": "0000926400237LI054A1201",
+    "createAt": "2023-05-16",
+    "fechaSalida": "16/05/2023",
+    "fechaEstimada": "19/05/2023",
+    "entregado": true,
+    "estado": "preparando",
+    "clienteNombre": "Ariana Melisa Kremar",
+    "clienteId": 2,
+    "lugar": [
+        "En Planta",
+        "corriente",
+        "Santa Silvina",
+        "Entre Rios",
+        "Chubut",
+
     ]
+}
+
 
 export default function SearchOrder() {
 
@@ -52,46 +36,51 @@ export default function SearchOrder() {
                         <LocalShippingIcon className='icon-icon' sx={{}} />
                     </Grid>
                 </Grid>
-                <Box sx={{ mt: 2, width: '90%', height: 300, borderRadius: 2, ml: '5%' }}>
-                    <Typography variant="subtitle1" sx={{ p: 1, bgcolor: '#1976d2', borderTopLeftRadius: 6.5, borderTopRightRadius: 6.5 }}>Estos son los resultados de la consulta: 1244536</Typography>
+                <Box sx={{ mt: 2, pb: 2, width: '90%', minHeight: 300, borderRadius: 2, ml: '5%' }}>
+                    <Typography variant="subtitle1" sx={{ p: 1, bgcolor: '#1976d2', borderTopLeftRadius: 6.5, borderTopRightRadius: 6.5 }}>Este es el resultado de la consulta:
+                        <Typography variant="span" sx={{ bgcolor: 'rgb(0, 191, 255)', borderRadius: 1, ml: 0.5 }}> {pedidos.nroPedido}</Typography>
+                    </Typography>
                     <Grid container>
-                        <Grid item xs={4} sx={{ pl: 1, border: '0.5px solid black', }}>
-                            <Typography>
-                                ID Pedido
-                            </Typography>
 
-                        </Grid>
-                        <Grid item xs={4} sx={{ pl: 1, border: '0.5px solid black', }}>
-                            <Typography>
-                                Nombre del cliente
+                        <Grid item xs={5} sx={{ p: 1, border: '0.5px solid black', borderBottom: 0, bgcolor: 'rgb(222, 222, 222)', borderBottom: '1px solid rgba(0, 0, 0, 0.5)' }}>
+                            <Typography sx={{ textAlign: 'center' }}>
+                                Donde se encuentra?
                             </Typography>
                         </Grid>
-                        <Grid item xs={4} sx={{ pl: 1, border: '0.5px solid black', }}>
-                            Fecha estimada de entrega
+                        <Grid item xs={4} sx={{ p: 1, border: '0.5px solid black', borderBottom: 0, bgcolor: 'rgb(222, 222, 222)', borderBottom: '1px solid rgba(0, 0, 0, 0.5)' }}>
+                            <Typography sx={{ textAlign: 'center' }}>
+                                Fecha estimada
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={3} sx={{ p: 1, border: '0.5px solid black', borderBottom: 0, bgcolor: 'rgb(222, 222, 222)', borderBottom: '1px solid rgba(0, 0, 0, 0.5)' }}>
+                            <Typography sx={{ textAlign: 'center' }}>
+                                Estado
+                            </Typography>
                         </Grid>
                     </Grid>
-                    {pedidos.map((pedido, index) => {
+                    {...pedidos.lugar.map((lugar, index) => {
                         return (
                             <Grid container key={index}>
-                                <Grid item xs={4} sx={{ display: 'block', pl: 2, borderRight: '1px solid black', borderLeft: '1px solid black', borderBottomLeftRadius: index === pedidos.length - 1 ? 5 : 'none', borderBottom: index === pedidos.length - 1 ? '1px solid black' : 'none' }}>
-                                    <Typography >
-                                        {pedido.id}
+
+                                <Grid item xs={5} sx={{ borderRight: '0.5px solid black', borderLeft: '0.5px solid black', borderBottom: index === pedidos.lugar.length - 1 ? '0.5px solid black' : 'none', backgroundColor: index % 2 === 0 ? 'rgb(229, 219, 255)' : 'transparent' }}>
+                                    <Typography sx={{ textAlign: 'center' }}>
+                                        {lugar}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={4} sx={{ pl: 2, borderRight: '1px solid black', borderLeft: '1px solid black', borderBottom: index === pedidos.length - 1 ? '1px solid black' : 'none' }}>
-                                    <Typography>
-                                        {pedido.clienteNombre}
+                                <Grid item xs={4} sx={{ borderRight: '0.5px solid black', borderLeft: '0.5px solid black', borderBottomRightRadius: index === pedidos.lugar.length - 1 ? 5 : 'none', borderBottom: index === pedidos.lugar.length - 1 ? '0.5px solid black' : 'none', backgroundColor: index % 2 === 0 ? 'rgb(229, 219, 255)' : 'transparent' }}>
+                                    <Typography sx={{ textAlign: 'center' }}>
+                                        {pedidos.fechaEstimada}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={4} sx={{ pl: 2, borderRight: '1px solid black', borderLeft: '1px solid black', borderBottomRightRadius: index === pedidos.length - 1 ? 5 : 'none', borderBottom: index === pedidos.length - 1 ? '1px solid black' : 'none' }}>
-                                    <Typography >
-                                        {pedido.fechaEstimada}
+                                <Grid item xs={3} sx={{ display: 'block', borderRight: '0.5px solid black', borderLeft: '0.5px solid black', borderBottomLeftRadius: index === pedidos.lugar.length - 1 ? 5 : 'none', borderBottom: index === pedidos.lugar.length - 1 ? '0.5px solid black' : 'none', backgroundColor: index % 2 === 0 ? 'rgb(229, 219, 255)' : 'transparent' }}>
+                                    <Typography sx={{ textAlign: 'center' }} >
+                                        {pedidos.entregado && index === pedidos.lugar.length - 1 ? 'Entregado' : 'En viaje'}
                                     </Typography>
                                 </Grid>
                             </Grid>
                         )
-                    })
-                    }
+                    })}
+
                 </Box>
             </Box>
         </>

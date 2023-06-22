@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Button, Grid, Typography, IconButton, Avatar, TextField } from '@mui/material';
+import { Box, Button, Grid, Typography, IconButton, Avatar, TextField, Alert } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Image from 'next/image';
 import SearchIcon from '@mui/icons-material/Search';
@@ -12,6 +12,7 @@ import { apiRest } from '@/pages/api/api';
 export default function HomePage() {
 
     const [codSearch, setCodSearch] = useState({ trakingCod: '' })
+    const [alertTrue, setAlertTrue] = useState(false)
 
     const onInputChange = ({ target }) => {
         const { name, value } = target;
@@ -23,14 +24,19 @@ export default function HomePage() {
     const router = useRouter()
 
     const handleSearch = async () => {
-        const res = await apiRest.getOneOrdersCliente(codSearch.trakingCod)
-        console.log(res);
+        console.log(codSearch.trakingCod);
+        router.push(`/search/${1}`)
 
-        if (res.status === 200) {
+        // const res = await apiRest.getOneOrdersCliente(codSearch.trakingCod)
+        // if (res?.status === 200) {
+        //     router.push(`/search/${res.data.id}`)
+        // } else {
+        //     setAlertTrue(true)
+        //     setTimeout(() => {
+        //         setAlertTrue(false)
 
-            router.push(`/search/${res.data.id}`)
-        }
-        // console.log(codSearch);
+        //     }, 3000)
+        // }
     }
 
     return (
@@ -54,13 +60,17 @@ export default function HomePage() {
                                 placeholder="Ingrese aqui su codigo de envio"
                                 variant="outlined"
                                 size='small'
-                                sx={{ bgcolor: 'white', borderRadius: 1 }} />
+                                sx={{ bgcolor: 'white', borderRadius: 1 }}
+                            />
                         </Grid>
                         <Grid item xs={2}>
                             <Button className='buttonSearch' variant='contained' sx={{ height: '100%' }} onClick={handleSearch} >
                                 <SearchIcon />
                             </Button>
                         </Grid>
+                        {alertTrue &&
+                            <Alert severity="error" sx={{ width: '95%', p: 0, pr: 5 }}>El codigo ingresado no existe</Alert>
+                        }
                     </Grid>
                 </Box>
 

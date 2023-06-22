@@ -2,18 +2,19 @@
 /*  --------------------- SearchOrder-------------------           */
 
 #__next{
-    background-color: rgb(251, 251, 186);
+    background-color: rgb(255, 244, 161);
 }
 
 .icon-icon{
-    color: #b319d2;
+    color: #191cd2;
 }
 
 .container{
+    background-color: rgb(255, 255, 255);
     border-radius: 36px 4px 35px 5px;
 -webkit-border-radius: 36px 4px 35px 5px;
 -moz-border-radius: 36px 4px 35px 5px;
-border: 1px solid #9a9a9a;
+border: 3px solid #4923d2;
     width: 40%; /* Ancho deseado para el div */
     margin-left: auto;
     margin-right: auto;
