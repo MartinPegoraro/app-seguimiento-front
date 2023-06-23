@@ -1,9 +1,36 @@
 
 /*  --------------------- SearchOrder-------------------           */
 
+
 #__next{
-    background-color: rgb(255, 244, 161);
+    background-color: rgb(201, 219, 254);
 }
+
+.circulo {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: black;
+    margin: auto;
+}
+
+.circuloInicio {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: green;
+    margin: auto;
+}
+.linea-horizontalInicio {
+    border-top: 3px solid green;
+    width: 100%;
+}
+
+.linea-horizontal {
+    border-top: 3px solid black;
+    width: 100%;
+}
+
 
 .icon-icon{
     color: #191cd2;
