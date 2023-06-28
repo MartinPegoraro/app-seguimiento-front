@@ -6,7 +6,8 @@ import { useState } from 'react';
 
 const ModalCreateUser = ({ handleCloseModal, openModal }) => {
     const [formData, setFormData] = useState({ nombre: '', apellido: '', direccion: '', email: '' })
-    const [email, setEmail] = useState('');
+    const [error, setError] = useState(false);
+
 
     const onInputChange = ({ target }) => {
         const { name, value } = target;
@@ -16,13 +17,17 @@ const ModalCreateUser = ({ handleCloseModal, openModal }) => {
         });
     }
 
-    const isEmailValid = () => {
+    const isEmailValid = (email) => {
         // Expresión regular para validar un correo electrónico
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     };
 
     const handleCreateClient = async () => {
+        if (!isEmailValid(formData.email)) {
+            setError(true);
+            return;
+        }
         const res = await apiRest.createOneClient(formData)
         if (res?.status === 201) {
             handleCloseModal()
@@ -68,19 +73,11 @@ const ModalCreateUser = ({ handleCloseModal, openModal }) => {
                         label='Correo'
                         value={formData.email}
                         size='small'
+                        error={error}
+                        helperText={error ? 'Ingrese un correo electrónico válido' : ''}
                         required
                         id="outlined-required"
                     />
-                    {/* <TextField
-                        sx={{ m: 1, width: '70%' }}
-                        onChange={onInputChange}
-                        name='phone'
-                        label='Telefono'
-                        value={formData.phone}
-                        size='small'
-                        required
-                        id="outlined-required"
-                    /> */}
                     <TextField
                         sx={{ m: 1, width: '70%' }}
                         onChange={onInputChange}

@@ -8,7 +8,7 @@ import ModalCreateUser from './ModalCreateUser';
 
 
 
-const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, camiones, clientes }) => {
+const ModalCreateOrder = ({ handleCloseModalCreateOrder, openModalCreateOrder, camiones = [], clientes = [] }) => {
     const [formData, setFormData] = useState({ fechaSalida: '', fechaEstimada: '', destino: '', descripcion: '', camion: { id: '' }, cliente: { id: '' }, entregado: false })
 
     const [selectedOptionTruck, setSelectedOptionTruck] = useState('');
