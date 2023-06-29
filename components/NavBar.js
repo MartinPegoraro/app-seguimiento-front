@@ -6,9 +6,15 @@ import InfoIcon from '@mui/icons-material/Info';
 import CallIcon from '@mui/icons-material/Call';
 import Link from 'next/link';
 import ModalFormulario from './ModalFormulario';
-export default function NavBar({ state }) {
+export default function NavBar({ setState }) {
     const [route, setRoute] = useState()
     const [open, setOpen] = useState(false)
+
+    const scrollToBottom = (state) => {
+        const element = document.documentElement; // Obtener el elemento raíz del documento
+        element.scrollIntoView({ behavior: 'smooth', block: 'end' }); // Hacer scroll hacia el final de la página suavemente
+        setState(state)
+    };
 
     const handleOpen = () => {
         setOpen(true)
@@ -28,10 +34,7 @@ export default function NavBar({ state }) {
 
     return (
         <>
-            <ModalFormulario
-                open={open}
-                handleClose={handleClose}
-            />
+
             <Box sx={{ width: '100%', border: '1px solid black', borderRadius: 1, bgcolor: 'white' }}>
                 <Grid container>
                     <Grid item xs={3} sx={{ position: 'relative' }}>
@@ -43,17 +46,17 @@ export default function NavBar({ state }) {
                         />
                     </Grid>
                     {
-                        route !== '/admin' ?
+                        !route?.startsWith('/admin') ?
                             <Grid item xs={5} sx={{ textAlign: 'right' }}>
-                                <Button className='buttonInfo' size='small' sx={{ my: 1.7, mr: 2, borderRadius: 5 }} >
+                                <Button className='buttonInfo' onClick={() => scrollToBottom(1)} size='small' sx={{ my: 1.7, mr: 2, borderRadius: 5 }} >
                                     <DesignServicesIcon />
                                     <Typography variant="caption" sx={{ textTransform: 'capitalize' }}>Servicios </Typography>
                                 </Button>
-                                <Button className='buttonInfo' size='small' sx={{ my: 1.7, mr: 2, borderRadius: 5 }}>
+                                <Button className='buttonInfo' onClick={() => scrollToBottom(2)} size='small' sx={{ my: 1.7, mr: 2, borderRadius: 5 }}>
                                     <InfoIcon />
                                     <Typography variant="caption" sx={{ textTransform: 'capitalize' }}>Acerca de nosotros </Typography>
                                 </Button>
-                                <Button className='buttonInfo' size='small' sx={{ my: 1.7, mr: 2, borderRadius: 5 }} >
+                                <Button className='buttonInfo' onClick={() => scrollToBottom(3)} size='small' sx={{ my: 1.7, mr: 2, borderRadius: 5 }} >
                                     <CallIcon />
                                     <Typography variant="caption" sx={{ textTransform: 'capitalize' }}>Contacto </Typography>
                                 </Button>
@@ -62,17 +65,27 @@ export default function NavBar({ state }) {
                             <Grid item xs={5} sx={{ textAlign: 'right' }}>
 
                             </Grid>
-                    }
-                    {route === '/admin' &&
 
+                    }
+                    {route === '/admin' ?
                         <Grid item xs={4} sx={{ textAlign: 'right' }}>
                             {/* <Link href={'/admin/home-admin'}> */}
                             <Button variant="contained" size='small' onClick={handleOpen} sx={{ my: 2, mr: 2, borderRadius: 5 }}> ingresar </Button>
                             {/* </Link> */}
                         </Grid>
+                        : route?.startsWith('/admin/') &&
+                        <Grid item xs={4} sx={{ textAlign: 'right' }}>
+                            {/* <Link href={'/admin/home-admin'}> */}
+                            <Button variant="contained" size='small' onClick={handleOpen} sx={{ my: 2, mr: 2, borderRadius: 5 }}> Logout </Button>
+                            {/* </Link> */}
+                        </Grid>
                     }
                 </Grid>
             </Box>
+            <ModalFormulario
+                open={open}
+                handleClose={handleClose}
+            />
         </>
     )
 }
