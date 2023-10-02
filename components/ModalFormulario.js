@@ -5,7 +5,6 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import React, { useState } from 'react'
 
 const ModalFormulario = ({ open, handleClose }) => {
-
     const [formData, setFormData] = useState({ user: '', password: '' })
 
     const onInputChange = ({ target }) => {
@@ -49,12 +48,25 @@ const ModalFormulario = ({ open, handleClose }) => {
                         <Grid item sx={{ display: 'flex', alignItems: 'center', margin: 'auto' }}>
                             <PersonIcon fontSize='large' />
                             <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
-                            <TextField onChange={onInputChange} name='user' value={formData.user} label="Usuario" variant="standard" />
+                            <TextField
+                                onChange={onInputChange}
+                                name='user'
+                                value={formData.user}
+                                label="Usuario"
+                                variant="standard"
+                            />
                         </Grid>
                         <Grid item sx={{ display: 'flex', alignItems: 'center', margin: 'auto' }}>
                             <VpnKeyIcon fontSize='large' />
                             <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
-                            <TextField onChange={onInputChange} name='password' value={formData.password} label="Contraseña" type="password" variant="standard" />
+                            <TextField
+                                onChange={onInputChange}
+                                name='password'
+                                value={formData.password}
+                                label="Contraseña"
+                                type="password"
+                                variant="standard"
+                            />
                         </Grid>
                         <Grid item>
                             <Button variant="contained" color="primary" onClick={handleSubmit}>

@@ -19,7 +19,7 @@ export default function Cliente() {
         setOpen(false)
     }
     const router = useRouter()
-
+    console.log("prueba 1")
     const handleDelete = async () => {
         const res = await apiRest.deleteOneClient(client.id)
         if (res.status === 201) {
